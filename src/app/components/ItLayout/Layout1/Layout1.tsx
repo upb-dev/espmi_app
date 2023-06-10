@@ -1,6 +1,6 @@
 import { ThemeProvider, useMediaQuery } from "@mui/material";
 import { Box, styled, useTheme } from "@mui/system";
-import { MatxSuspense } from "../../../components";
+import ItSuspense from "../../../components/ItSuspense";
 import useSettings from "../../../hooks/useSettings";
 import { sidenavCompactWidth, sideNavWidth } from "../../../utils/constant";
 import React, { useEffect, useRef } from "react";
@@ -11,6 +11,7 @@ import SidenavTheme from "../../ItTheme/SidenavTheme/SidenavTheme";
 // import SecondarySidebar from '../../SecondarySidebar/SecondarySidebar';
 import Layout1Sidenav from "./Layout1Sidenav";
 import Layout1Topbar from "./Layout1Topbar";
+import { SecondarySidebar } from "../settings";
 
 const Layout1Root = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -34,18 +35,25 @@ const StyledScrollBar = styled(Scrollbar)(() => ({
   flexDirection: "column",
 }));
 
-const LayoutContainer = styled(Box)(({ width, secondarysidebar }) => ({
-  height: "100vh",
-  display: "flex",
-  flexGrow: "1",
-  flexDirection: "column",
-  verticalAlign: "top",
-  marginLeft: width,
-  position: "relative",
-  overflow: "hidden",
-  transition: "all 0.3s ease",
-  marginRight: secondarysidebar.open ? 50 : 0,
-}));
+interface StyledProps {
+  width?: string | number;
+  secondarysidebar?: SecondarySidebar;
+}
+
+const LayoutContainer = styled(Box)<StyledProps>(
+  ({ width, secondarysidebar }) => ({
+    height: "100vh",
+    display: "flex",
+    flexGrow: "1",
+    flexDirection: "column",
+    verticalAlign: "top",
+    marginLeft: width,
+    position: "relative",
+    overflow: "hidden",
+    transition: "all 0.3s ease",
+    marginRight: secondarysidebar?.open ? 50 : 0,
+  })
+);
 
 const Layout1 = () => {
   const { settings, updateSettings } = useSettings();
@@ -80,7 +88,7 @@ const Layout1 = () => {
     let sidebarMode = settings.layout1Settings.leftSidebar.mode;
     if (settings.layout1Settings.leftSidebar.show) {
       let mode = isMdScreen ? "close" : sidebarMode;
-      updateSettings({ layout1Settings: { leftSidebar: { mode } } });
+      updateSettings({ layout1Settings: { leftSidebar: { mode: mode } } });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMdScreen]);
@@ -108,12 +116,12 @@ const Layout1 = () => {
               </ThemeProvider>
             )}
             <Box flexGrow={1} position="relative">
-              <MatxSuspense>
+              <ItSuspense>
                 <Outlet />
-              </MatxSuspense>
+              </ItSuspense>
             </Box>
 
-            {settings.footer.show && !settings.footer.fixed && <Footer />}
+            {settings?.footer?.show && !settings.footer.fixed && <Footer />}
           </StyledScrollBar>
         )}
 
@@ -126,16 +134,16 @@ const Layout1 = () => {
             )}
 
             <Box flexGrow={1} position="relative">
-              <MatxSuspense>
+              <ItSuspense>
                 <Outlet />
-              </MatxSuspense>
+              </ItSuspense>
             </Box>
 
-            {settings.footer.show && !settings.footer.fixed && <Footer />}
+            {settings?.footer?.show && !settings?.footer?.fixed && <Footer />}
           </ContentBox>
         )}
 
-        {settings.footer.show && settings.footer.fixed && <Footer />}
+        {settings?.footer?.show && settings.footer.fixed && <Footer />}
       </LayoutContainer>
 
       {/* {settings.secondarySidebar.show && <SecondarySidebar />} */}
