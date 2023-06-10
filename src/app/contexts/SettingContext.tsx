@@ -5,9 +5,20 @@ import {
   ItLayoutSettingsType,
 } from "../components/ItLayout/settings";
 
+type PartialItLayoutSettings = Partial<ItLayoutSettingsType>;
+type PartialLayout1 = Partial<ItLayoutSettingsType["layout1Settings"]>;
+type PartialSecondarySidebar = Partial<
+  ItLayoutSettingsType["secondarySidebar"]
+>;
+type PartialFooter = Partial<ItLayoutSettingsType["footer"]>;
+
+type PartialData = PartialItLayoutSettings &
+  PartialLayout1 &
+  PartialSecondarySidebar &
+  PartialFooter;
 interface SettingsContextProps {
   settings: ItLayoutSettingsType;
-  updateSettings: (update: Partial<ItLayoutSettingsType>) => void;
+  updateSettings: (update: PartialData) => void;
 }
 
 export const SettingsContext = createContext<SettingsContextProps>({

@@ -1,15 +1,15 @@
-import { createTheme } from '@mui/material';
-import { forEach, merge } from 'lodash';
+import { ThemeOptions, createTheme } from '@mui/material';
+import { forEach } from 'lodash';
 import { themeColors } from './themeColors';
 import themeOptions from './themeOptions';
 
-function createMatxThemes() {
-  let themes = {};
+function createIthemes() {
+  let themes: Record<string, any> = {};
 
   forEach(themeColors, (value, key) => {
-    themes[key] = createTheme(merge({}, themeOptions, value));
+    themes[key] = createTheme(themeOptions as ThemeOptions, value);
   });
 
   return themes;
 }
-export const themes = createMatxThemes();
+export const themes = createIthemes();

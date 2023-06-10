@@ -17,8 +17,12 @@ import Scrollbar from "react-perfect-scrollbar";
 import { themeShadows } from "../ItTheme/themeColors";
 import { H5, Span } from "../Typography";
 import BadgeSelected from "./BadgeSelected";
+import { ItLayoutSettingsType } from "../ItLayout/settings";
 
-const Label = styled(Span)(({ theme }) => ({
+interface LabelProps {
+  onClick: () => void;
+}
+const Label = styled(Span)<LabelProps>(({ theme }) => ({
   fontWeight: 700,
   fontSize: "1rem",
   cursor: "pointer",
@@ -33,6 +37,8 @@ const Label = styled(Span)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.main,
     color: theme.palette.secondary.contrastText,
   },
+  ellipsis: undefined,
+  textTransform: undefined,
 }));
 
 const ItCustomaizer = styled("div")(({ theme }) => ({
@@ -103,7 +109,12 @@ const ItCustomizer = () => {
   return (
     <Fragment>
       <Tooltip title="Theme Settings" placement="left">
-        <Label className="open" onClick={tooglePanel}>
+        <Label
+          className="open"
+          onClick={tooglePanel}
+          ellipsis={undefined}
+          textTransform={undefined}
+        >
           DEMOS
         </Label>
       </Tooltip>
@@ -118,11 +129,25 @@ const ItCustomizer = () => {
         >
           <ItCustomaizer>
             <Controller>
-              <Box display="flex">
+              <Box
+                sx={{
+                  display: "none",
+                }}
+                display="flex"
+              >
                 <Icon className="icon" color="primary">
                   settings
                 </Icon>
-                <H5 sx={{ ml: 1, fontSize: "1rem" }}>Theme Settings</H5>
+                <H5
+                  ellipsis={false}
+                  textTransform={undefined}
+                  sx={{
+                    ml: 1,
+                    fontSize: "1rem",
+                  }}
+                >
+                  Theme Settings
+                </H5>
               </Box>
 
               <IconButton onClick={tooglePanel}>
@@ -205,7 +230,14 @@ const ItCustomizer = () => {
   );
 };
 
-const demoLayouts = [
+interface ITDemoLayouts {
+  isPro: boolean;
+  name: string;
+  thumbnail: string;
+  options: Partial<ItLayoutSettingsType>;
+}
+
+const demoLayouts: ITDemoLayouts[] = [
   {
     isPro: false,
     name: "Light Sidebar",

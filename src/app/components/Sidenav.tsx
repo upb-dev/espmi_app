@@ -1,5 +1,5 @@
 import { styled } from "@mui/system";
-import { ItVerticalNav } from "../components";
+import ItVerticalNav from "../components/ItVerticalNav/ItVerticalNav";
 import useSettings from "../hooks/useSettings";
 import { navigations } from "../navigations";
 import { Fragment } from "react";
@@ -23,19 +23,20 @@ const SideNavMobile = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("lg")]: { display: "none" },
 }));
 
-const Sidenav = ({ children }) => {
+const Sidenav = ({ children }: { children: React.ReactNode }) => {
   const { settings, updateSettings } = useSettings();
 
-  const updateSidebarMode = (sidebarSettings) => {
+  const updateSidebarMode = (sidebarSettings: any) => {
     let activeLayoutSettingsName = settings.activeLayout + "Settings";
-    let activeLayoutSettings = settings[activeLayoutSettingsName];
+    let activeLayoutSettings =
+      settings[activeLayoutSettingsName as keyof typeof settings];
 
     updateSettings({
       ...settings,
       [activeLayoutSettingsName]: {
-        ...activeLayoutSettings,
+        ...(activeLayoutSettings as any),
         leftSidebar: {
-          ...activeLayoutSettings.leftSidebar,
+          ...(activeLayoutSettings as any).leftSidebar,
           ...sidebarSettings,
         },
       },

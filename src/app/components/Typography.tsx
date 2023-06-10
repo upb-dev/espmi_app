@@ -1,23 +1,38 @@
-import { Box, styled } from "@mui/material";
+import { Box, SxProps, Theme, styled } from "@mui/material";
 import clsx from "clsx";
+import React from "react";
 
-const StyledBox = styled(Box)(({ theme, texttransformstyle, ellipsis }) => ({
-  textTransform: texttransformstyle || "none",
-  whiteSpace: ellipsis ? "nowrap" : "normal",
-  overflow: ellipsis ? "hidden" : "",
-  textOverflow: ellipsis ? "ellipsis" : "",
-}));
+interface StyledProps {
+  textTransform: string;
+  ellipsis?: boolean;
+}
 
+const StyledBox = styled(Box)<StyledProps>`
+  ${({ textTransform, ellipsis }) => `
+    text-transform: ${textTransform || "none"};
+    white-space: ${ellipsis ? "nowrap" : "normal"};
+    overflow: ${ellipsis ? "hidden" : "visible"};
+    text-overflow: ${ellipsis ? "ellipsis" : "clip"};
+  `}
+`;
+
+export interface TypographyProps {
+  children: React.ReactNode;
+  className?: string;
+  ellipsis?: boolean;
+  textTransform: any;
+  sx?: SxProps<Theme>;
+}
 export const H1 = ({
   children,
   className,
   ellipsis,
   textTransform,
   ...props
-}) => {
+}: TypographyProps) => {
   return (
     <StyledBox
-      texttransformstyle={textTransform}
+      textTransform={textTransform}
       ellipsis={ellipsis}
       className={clsx({ [className || ""]: true })}
       component="h1"
@@ -39,10 +54,10 @@ export const H2 = ({
   ellipsis,
   textTransform,
   ...props
-}) => {
+}: TypographyProps) => {
   return (
     <StyledBox
-      texttransformstyle={textTransform}
+      textTransform={textTransform}
       ellipsis={ellipsis}
       className={clsx({ [className || ""]: true })}
       component="h2"
@@ -64,10 +79,10 @@ export const H3 = ({
   ellipsis,
   textTransform,
   ...props
-}) => {
+}: TypographyProps) => {
   return (
     <StyledBox
-      texttransformstyle={textTransform}
+      textTransform={textTransform}
       ellipsis={ellipsis}
       className={clsx({ [className || ""]: true })}
       component="h3"
@@ -89,10 +104,10 @@ export const H4 = ({
   ellipsis,
   textTransform,
   ...props
-}) => {
+}: TypographyProps) => {
   return (
     <StyledBox
-      texttransformstyle={textTransform}
+      textTransform={textTransform}
       ellipsis={ellipsis}
       className={clsx({
         [className || ""]: true,
@@ -116,10 +131,10 @@ export const H5 = ({
   ellipsis,
   textTransform,
   ...props
-}) => {
+}: TypographyProps) => {
   return (
     <StyledBox
-      texttransformstyle={textTransform}
+      textTransform={textTransform}
       ellipsis={ellipsis}
       className={clsx({
         [className || ""]: true,
@@ -143,10 +158,10 @@ export const H6 = ({
   ellipsis,
   textTransform,
   ...props
-}) => {
+}: TypographyProps) => {
   return (
     <StyledBox
-      texttransformstyle={textTransform}
+      textTransform={textTransform}
       ellipsis={ellipsis}
       className={clsx({
         [className || ""]: true,
@@ -164,11 +179,16 @@ export const H6 = ({
   );
 };
 
-export const Paragraph = (props) => {
-  const { children, className, ellipsis, textTransform, ...rest } = props;
+export const Paragraph = ({
+  children,
+  className,
+  ellipsis,
+  textTransform,
+  ...props
+}: TypographyProps) => {
   return (
     <StyledBox
-      texttransformstyle={textTransform}
+      textTransform={textTransform}
       ellipsis={ellipsis}
       className={clsx({
         [className || ""]: true,
@@ -177,7 +197,7 @@ export const Paragraph = (props) => {
       mb={0}
       mt={0}
       fontSize="14px"
-      {...rest}
+      {...props}
     >
       {children}
     </StyledBox>
@@ -190,10 +210,10 @@ export const Small = ({
   ellipsis,
   textTransform,
   ...props
-}) => {
+}: TypographyProps) => {
   return (
     <StyledBox
-      texttransformstyle={textTransform}
+      textTransform={textTransform}
       ellipsis={ellipsis}
       className={clsx({
         [className || ""]: true,
@@ -215,10 +235,10 @@ export const Span = ({
   ellipsis,
   textTransform,
   ...props
-}) => {
+}: TypographyProps) => {
   return (
     <StyledBox
-      texttransformstyle={textTransform}
+      textTransform={textTransform}
       ellipsis={ellipsis}
       className={clsx({
         [className || ""]: true,
@@ -238,10 +258,10 @@ export const Tiny = ({
   ellipsis,
   textTransform,
   ...props
-}) => {
+}: TypographyProps) => {
   return (
     <StyledBox
-      texttransformstyle={textTransform}
+      textTransform={textTransform}
       ellipsis={ellipsis}
       className={clsx({
         [className || ""]: true,

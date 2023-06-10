@@ -22,7 +22,30 @@ const textLight = {
     main: '#FF3D57',
   };
   
-  export const themeColors = {
+   export interface ThemeColor {
+    palette: {
+      type: 'light' | 'dark';
+      primary: {
+        main: string;
+        contrastText: string;
+      };
+      secondary: {
+        main: string;
+        contrastText: string;
+      };
+      error?: {
+        main: string
+      };
+      background?: {
+        paper: string;
+        default: string;
+      };
+      text: {
+        primary: string;
+      };
+    };
+  }
+  export const themeColors : Record<string, ThemeColor> = {
     whitePurple: {
       palette: {
         type: 'light',

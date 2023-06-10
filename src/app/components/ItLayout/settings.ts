@@ -1,26 +1,26 @@
 import { themes } from '../ItTheme/initThemes';
-import layout1Settings from './Layout1/Layout1Settings';
+import Layout1Settings,{ Layout1Type} from './Layout1/Layout1Settings';
 
-interface SecondarySidebar {
+export interface SecondarySidebar {
   show: boolean;
   open: boolean;
   theme: string;
 }
 
 interface Footer {
-  show: boolean;
-  fixed: boolean;
+  show?: boolean;
+  fixed?: boolean;
   theme: string;
 }
 
 export interface ItLayoutSettingsType {
   activeLayout: string;
   activeTheme: string;
-  perfectScrollbar: boolean;
+  perfectScrollbar?: boolean;
   themes: typeof themes;
-  layout1Settings: typeof layout1Settings;
-  secondarySidebar: SecondarySidebar;
-  footer: Footer;
+  layout1Settings:  Layout1Type;
+  secondarySidebar?: SecondarySidebar;
+  footer?: Footer;
 }
 
 // UPDATE BELOW CODE
@@ -51,7 +51,7 @@ export const ItLayoutSettings: ItLayoutSettingsType = {
   activeTheme: 'blue',
   perfectScrollbar: false,
   themes: themes,
-  layout1Settings: layout1Settings,
+  layout1Settings: Layout1Settings,
   secondarySidebar: {
     show: true,
     open: false,
