@@ -1,8 +1,9 @@
 import { ButtonBase, Icon } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import clsx from "clsx";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { Navigation } from "../../navigations";
 
 const NavExpandRoot = styled("div")(({ theme }) => ({
   "& .expandIcon": {
@@ -74,43 +75,58 @@ const BadgeValue = styled("div")(() => ({
   borderRadius: "300px",
 }));
 
-const ItVerticalNavExpansionPanel = ({ item, children, mode }) => {
-  const [collapsed, setCollapsed] = useState(true);
-  const elementRef = useRef(null);
+interface ItVerticalNavExpansionPanelProps {
+  item: Navigation;
+  children: React.ReactNode;
+  mode: string;
+}
+
+const ItVerticalNavExpansionPanel = ({
+  item,
+  children,
+  mode,
+}: ItVerticalNavExpansionPanelProps) => {
+  const [collapsed, setCollapsed] = useState<boolean>(true);
+  const elementRef = useRef<HTMLDivElement | null>(null);
   const componentHeight = useRef(0);
   const { pathname } = useLocation();
   const { name, icon, iconText, badge } = item;
 
   const handleClick = () => {
     componentHeight.current = 0;
-    calcaulateHeight(elementRef.current);
+    calcaulateHeight(elementRef!.current as HTMLElement);
     setCollapsed(!collapsed);
   };
 
-  const calcaulateHeight = useCallback((node) => {
-    if (node.name !== "child") {
-      for (let child of node.children) {
-        calcaulateHeight(child);
-      }
-    }
+  const calcaulateHeight = useCallback((node: HTMLElement) => {
+    const nodeType = node.getAttribute("data-node-type");
 
-    if (node.name === "child") componentHeight.current += node.scrollHeight;
-    else componentHeight.current += 44; //here 44 is node height
+    if (nodeType !== null && nodeType === "child") {
+      componentHeight.current += node.scrollHeight;
+    } else {
+      if (node.children !== undefined) {
+        for (const child of node.children) {
+          calcaulateHeight(child as HTMLElement);
+        }
+      }
+
+      componentHeight.current += 44; // here 44 is node height
+    }
     return;
   }, []);
 
   useEffect(() => {
-    if (!elementRef) return;
+    if (!elementRef.current) return;
 
     calcaulateHeight(elementRef.current);
 
     // OPEN DROPDOWN IF CHILD IS ACTIVE
-    for (let child of elementRef.current.children) {
+    for (const child of elementRef.current.children) {
       if (child.getAttribute("href") === pathname) {
         setCollapsed(false);
       }
     }
-  }, [pathname, calcaulateHeight]);
+  }, [pathname, calcaulateHeight, elementRef.current]);
 
   return (
     <NavExpandRoot>

@@ -18,7 +18,11 @@ import { themeShadows } from "../ItTheme/themeColors";
 import { H5, Span } from "../Typography";
 import BadgeSelected from "./BadgeSelected";
 
-const Label = styled(Span)(({ theme }) => ({
+interface LabelProps {
+  onClick: () => void;
+}
+
+const Label = styled(Span)<LabelProps>(({ theme }) => ({
   fontWeight: 700,
   fontSize: "1rem",
   cursor: "pointer",

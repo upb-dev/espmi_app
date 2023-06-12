@@ -1,17 +1,30 @@
-import { Box, ButtonBase, Icon, styled } from "@mui/material";
+import {
+  Box,
+  ButtonBase,
+  Icon,
+  styled,
+  Theme,
+  // StyledComponentProps,
+} from "@mui/material";
+// import { styled } from "@mui/system";
 import useSettings from "../../hooks/useSettings";
 import React, { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import { Paragraph, Span } from "../Typography";
 import ItVerticalNavExpansionPanel from "./ItVerticalNavExpansionPanel";
+import { Navigation } from "../../navigations";
 
-const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
+interface ListLabelProps {
+  theme?: Theme;
+  mode?: string;
+}
+const ListLabel = styled(Paragraph)<ListLabelProps>(({ theme, mode }) => ({
   fontSize: "12px",
   marginTop: "20px",
   marginLeft: "15px",
   marginBottom: "10px",
   textTransform: "uppercase",
-  display: mode === "compact" && "none",
+  display: mode === "compact" ? "none" : "block",
   color: theme.palette.text.secondary,
 }));
 
@@ -37,8 +50,28 @@ const ExtAndIntCommon = {
     verticalAlign: "middle",
   },
 };
+
 const ExternalLink = styled("a")(({ theme }) => ({
-  ...ExtAndIntCommon,
+  display: "flex",
+  overflow: "hidden",
+  borderRadius: "4px",
+  height: 44,
+  whiteSpace: "pre",
+  marginBottom: "8px",
+  textDecoration: "none",
+  justifyContent: "space-between",
+  transition: "all 150ms ease-in",
+  "&:hover": { background: "rgba(255, 255, 255, 0.08)" },
+  "&.compactNavItem": {
+    overflow: "hidden",
+    justifyContent: "center !important",
+  },
+  "& .icon": {
+    fontSize: "18px",
+    paddingLeft: "16px",
+    paddingRight: "16px",
+    verticalAlign: "middle",
+  },
   color: theme.palette.text.primary,
 }));
 
@@ -52,10 +85,14 @@ const InternalLink = styled(Box)(({ theme }) => ({
   },
 }));
 
-const StyledText = styled(Span)(({ mode }) => ({
+interface StyledTextProps {
+  mode: string;
+}
+
+const StyledText = styled(Span)<StyledTextProps>(({ mode }) => ({
   fontSize: "0.875rem",
   paddingLeft: "0.8rem",
-  display: mode === "compact" && "none",
+  display: mode === "compact" ? "none" : "block",
 }));
 
 const BulletIcon = styled("div")(({ theme }) => ({
@@ -73,12 +110,12 @@ const BadgeValue = styled("div")(() => ({
   borderRadius: "300px",
 }));
 
-const ItVerticalNav = ({ items }) => {
+const ItVerticalNav = ({ items }: { items: Navigation[] }) => {
   const { settings } = useSettings();
   const { mode } = settings.layout1Settings.leftSidebar;
 
-  const renderLevels = (data) => {
-    return data.map((item, index) => {
+  const renderLevels = (data: Navigation[]) => {
+    return data.map((item, index: number) => {
       if (item.type === "label")
         return (
           <ListLabel key={index} mode={mode} className="sidenavHoverShow">
@@ -123,7 +160,7 @@ const ItVerticalNav = ({ items }) => {
         return (
           <InternalLink key={index}>
             <NavLink
-              to={item.path}
+              to={item.path!}
               className={({ isActive }) =>
                 isActive
                   ? `navItemActive ${mode === "compact" && "compactNavItem"}`
@@ -139,14 +176,14 @@ const ItVerticalNav = ({ items }) => {
                   <Fragment>
                     <BulletIcon
                       className={`nav-bullet`}
-                      sx={{ display: mode === "compact" && "none" }}
+                      sx={{ display: mode === "compact" ? "none" : "block" }}
                     />
                     <Box
                       className="nav-bullet-text"
                       sx={{
                         ml: "20px",
                         fontSize: "11px",
-                        display: mode !== "compact" && "none",
+                        display: mode !== "compact" ? "none" : "block",
                       }}
                     >
                       {item.iconText}

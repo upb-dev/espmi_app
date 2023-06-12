@@ -1,6 +1,11 @@
-import { Box, styled, useMediaQuery, useTheme } from "@mui/material";
+import { Box, styled, useMediaQuery, useTheme, SxProps } from "@mui/material";
+import { HTMLAttributes, ReactNode } from "react";
 
-const SideNav = styled("div")(({ theme, width }) => ({
+interface SideNavProps extends HTMLAttributes<HTMLDivElement> {
+  width: string;
+}
+
+const SideNav = styled("div")<SideNavProps>(({ theme, width }) => ({
   zIndex: 91,
   width: width,
   overflow: "hidden",
@@ -23,7 +28,20 @@ const SideNavOverlay = styled("div")(() => ({
   background: "rgba(0, 0, 0, 0.74)",
 }));
 
-const ItSidenav = ({ sx, open, children, toggleSidenav, width = "220px" }) => {
+interface ItSidenavProps {
+  sx?: SxProps;
+  open: boolean;
+  children: ReactNode;
+  toggleSidenav: () => void;
+  width?: string;
+}
+const ItSidenav = ({
+  sx,
+  open,
+  children,
+  toggleSidenav,
+  width = "220px",
+}: ItSidenavProps) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 

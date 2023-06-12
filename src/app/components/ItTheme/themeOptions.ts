@@ -1,12 +1,17 @@
-import { red } from '@mui/material/colors';
-import { components } from './components';
-import { ThemeOptions } from '@mui/material';
+import { red } from "@mui/material/colors";
+import { components } from "./components";
+import { ThemeOptions } from "@mui/material";
 
+interface CusomThemeOptions extends ThemeOptions {
+  status?: {
+    danger?: string;
+  };
+}
 
-const themeOptions: ThemeOptions = {
+const themeOptions: CusomThemeOptions = {
   typography: {
     fontSize: 14,
-    body1: { fontSize: '14px' },
+    body1: { fontSize: "14px" },
   },
 
   status: { danger: red[500] },

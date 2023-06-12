@@ -4,7 +4,7 @@ import React from "react";
 
 const ItTheme = ({ children }: { children: React.ReactNode }) => {
   const { settings } = useSettings();
-  let activeTheme = { ...settings.themes[settings.activeTheme] };
+  const activeTheme = { ...settings.themes[settings.activeTheme] };
 
   return (
     <ThemeProvider theme={activeTheme}>

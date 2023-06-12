@@ -14,8 +14,9 @@ import { sideNavWidth, topBarHeight } from "../../utils/constant";
 import { getTimeDifference } from "../../utils/utils.js";
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { themeShadows } from "../MatxTheme/themeColors";
+import { themeShadows } from "../ItTheme/themeColors";
 import { Paragraph, Small } from "../Typography";
+// TODO ntar dulu ya
 
 const Notification = styled("div")(() => ({
   padding: "16px",
@@ -101,7 +102,6 @@ const NotificationBar = ({ container }) => {
 
       <ThemeProvider theme={settings.themes[settings.activeTheme]}>
         <Drawer
-          width={"100px"}
           container={container}
           variant="temporary"
           anchor={"right"}
@@ -109,6 +109,9 @@ const NotificationBar = ({ container }) => {
           onClose={handleDrawerToggle}
           ModalProps={{
             keepMounted: true,
+          }}
+          sx={{
+            width: "100px",
           }}
         >
           <Box sx={{ width: sideNavWidth }}>

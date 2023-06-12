@@ -1,7 +1,12 @@
 import { ThemeProvider, useTheme } from "@mui/material";
 import useSettings from "../../../hooks/useSettings";
+import React from "react";
 
-const SidenavTheme = ({ children }) => {
+interface SideNavProps {
+  children: React.ReactNode;
+}
+
+const SidenavTheme: React.FC<SideNavProps> = ({ children }) => {
   const theme = useTheme();
   const { settings } = useSettings();
   const sidenavTheme =

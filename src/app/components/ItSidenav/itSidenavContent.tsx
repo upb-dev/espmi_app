@@ -1,4 +1,5 @@
 import { styled } from "@mui/material";
+import React from "react";
 
 const Content = styled("div")(() => ({
   flexGrow: 1,
@@ -6,7 +7,7 @@ const Content = styled("div")(() => ({
   position: "relative",
 }));
 
-const ItSidenavContent = ({ children }) => {
+const ItSidenavContent = ({ children }: { children: React.ReactNode }) => {
   return <Content>{children}</Content>;
 };
 
