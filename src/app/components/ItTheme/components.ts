@@ -1,5 +1,7 @@
 import { themeShadows } from './themeColors';
+import { ThemeOptions } from '@mui/material';
 
+// TODO change to type
 export const components = {
   MuiTable: {
     styleOverrides: {

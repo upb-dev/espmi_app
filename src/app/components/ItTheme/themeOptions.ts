@@ -1,7 +1,9 @@
 import { red } from '@mui/material/colors';
 import { components } from './components';
+import { ThemeOptions } from '@mui/material';
 
-const themeOptions = {
+
+const themeOptions: ThemeOptions = {
   typography: {
     fontSize: 14,
     body1: { fontSize: '14px' },
