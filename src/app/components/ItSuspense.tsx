@@ -1,8 +1,8 @@
-import { ItLoading } from "../components";
-import { Suspense } from "react";
+import ItLoading from "../components/ItLoading";
+import React, { Suspense } from "react";
 
-const MatxSuspense = ({ children }) => {
+const ItSuspense = ({ children }: { children: React.ReactNode }) => {
   return <Suspense fallback={<ItLoading />}>{children}</Suspense>;
 };
 
-export default MatxSuspense;
+export default ItSuspense;

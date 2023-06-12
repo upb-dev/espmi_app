@@ -7,23 +7,21 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { Box, styled, useTheme } from "@mui/system";
-import { MatxMenu, MatxSearchBox } from "../../../components";
+import ItMenu from "../../../components/ItMenu";
+import ItSearchBox from "../../../components/ItSearchBox";
 import { themeShadows } from "../../../components/ItTheme/themeColors";
-// import { NotificationProvider } from '../../../contexts/NotificationContext';
-import useAuth from "../../../hooks/userAuth";
+// import useAuth from "../../../hooks/userAuth";
 import useSettings from "../../../hooks/useSettings";
 import { topBarHeight } from "../../../utils/constant";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Span } from "../../../components/Typography";
-// import NotificationBar from '../../NotificationBar/NotificationBar';
-// import ShoppingCart from '../../ShoppingCart';
 
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
+export const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-const TopbarRoot = styled("div")(({ theme }) => ({
+const TopbarRoot = styled("div")(() => ({
   top: 0,
   zIndex: 96,
   transition: "all 0.3s ease",
@@ -77,7 +75,13 @@ const IconBox = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("md")]: { display: "none !important" },
 }));
 
-const Layout1Topbar = () => {
+const Layout1Topbar = ({
+  fixed,
+  className,
+}: {
+  fixed?: boolean;
+  className?: string;
+}) => {
   const theme = useTheme();
   const { settings, updateSettings } = useSettings();
   const { logout, user } = useAuth();
@@ -89,8 +93,10 @@ const Layout1Topbar = () => {
     });
   };
 
+  console.log(fixed, className);
+
   const handleSidebarToggle = () => {
-    let { layout1Settings } = settings;
+    const { layout1Settings } = settings;
     let mode;
     if (isMdScreen) {
       mode = layout1Settings.leftSidebar.mode === "close" ? "mobile" : "close";
@@ -124,7 +130,7 @@ const Layout1Topbar = () => {
         </Box>
 
         <Box display="flex" alignItems="center">
-          <MatxSearchBox />
+          <ItSearchBox />
 
           {/* <NotificationProvider>
             <NotificationBar />
@@ -132,7 +138,7 @@ const Layout1Topbar = () => {
 
           <ShoppingCart /> */}
 
-          <MatxMenu
+          <ItMenu
             menuButton={
               <UserMenu>
                 <Hidden xsDown>
@@ -167,7 +173,7 @@ const Layout1Topbar = () => {
               <Icon> power_settings_new </Icon>
               <Span> Logout </Span>
             </StyledItem>
-          </MatxMenu>
+          </ItMenu>
         </Box>
       </TopbarContainer>
     </TopbarRoot>

@@ -1,5 +1,9 @@
-import React, { createContext, useState } from "react";
-import { merge } from "lodash";
+import React, {
+  createContext,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import {
   ItLayoutSettings,
   ItLayoutSettingsType,
@@ -7,40 +11,32 @@ import {
 
 interface SettingsContextProps {
   settings: ItLayoutSettingsType;
-  updateSettings: (update: Partial<ItLayoutSettingsType>) => void;
+  updateSettings: Dispatch<SetStateAction<ItLayoutSettingsType>>;
 }
 
 export const SettingsContext = createContext<SettingsContextProps>({
   settings: ItLayoutSettings,
-  updateSettings: () => {},
+  updateSettings: () => {
+    throw new Error("udateSettings belum diimplementasikan");
+  },
 });
 
 interface SettingsProviderProps {
-  settings?: Partial<ItLayoutSettingsType>;
+  settings?: ItLayoutSettingsType;
   children: React.ReactNode;
 }
 
 export const SettingsProvider: React.FC<SettingsProviderProps> = ({
-  settings,
   children,
 }) => {
-  const [currentSettings, setCurrentSettings] = useState<ItLayoutSettingsType>(
-    () => {
-      const merged = Object.assign({}, ItLayoutSettings, settings);
-      return merged;
-    }
-  );
-
-  const handleUpdateSettings = (update: Partial<ItLayoutSettingsType>) => {
-    const merged = merge({}, currentSettings, update);
-    setCurrentSettings(merged);
-  };
+  const [currentSettings, setCurrentSettings] =
+    useState<ItLayoutSettingsType>(ItLayoutSettings);
 
   return (
     <SettingsContext.Provider
       value={{
         settings: currentSettings,
-        updateSettings: handleUpdateSettings,
+        updateSettings: setCurrentSettings,
       }}
     >
       {children}

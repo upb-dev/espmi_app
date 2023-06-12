@@ -2,8 +2,6 @@ import { themeShadows } from "./themeColors";
 import { ComponentsProps } from "@mui/material";
 import { CSSObject } from "@mui/system";
 
-// TODO change to type
-
 interface MUIDataTableBodyCellProps {
   styleOverrides?: {
     root?: CSSObject;

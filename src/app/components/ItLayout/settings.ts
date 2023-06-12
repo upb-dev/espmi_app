@@ -1,5 +1,6 @@
-import { themes } from '../ItTheme/initThemes';
-import layout1Settings from './Layout1/Layout1Settings';
+import { themes } from "../ItTheme/initThemes";
+import { Layout1SettingsType } from "./Layout1/Layout1Settings";
+import { ThemeOptions } from "@mui/material/styles";
 
 interface SecondarySidebar {
   show: boolean;
@@ -8,19 +9,19 @@ interface SecondarySidebar {
 }
 
 interface Footer {
-  show: boolean;
-  fixed: boolean;
+  show?: boolean;
+  fixed?: boolean;
   theme: string;
 }
 
 export interface ItLayoutSettingsType {
   activeLayout: string;
   activeTheme: string;
-  perfectScrollbar: boolean;
-  themes: typeof themes;
-  layout1Settings: typeof layout1Settings;
-  secondarySidebar: SecondarySidebar;
-  footer: Footer;
+  perfectScrollbar?: boolean;
+  themes?: Record<string, ThemeOptions>;
+  layout1Settings?: Layout1SettingsType;
+  secondarySidebar?: SecondarySidebar;
+  footer?: Footer;
 }
 
 // UPDATE BELOW CODE
@@ -46,20 +47,34 @@ export interface ItLayoutSettingsType {
 //   },
 // };
 
+export const Layout1Settings: Layout1SettingsType = {
+  leftSidebar: {
+    show: true,
+    mode: "full", // full, close, compact, mobile,
+    theme: "slateDark1", // View all valid theme colors inside MatxTheme/themeColors.js
+    bgImgURL: "/assets/images/sidebar/sidebar-bg-dark.jpg",
+  },
+  topbar: {
+    show: true,
+    fixed: true,
+    theme: "whiteBlue", // View all valid theme colors inside MatxTheme/themeColors.js
+  },
+};
+
 export const ItLayoutSettings: ItLayoutSettingsType = {
-  activeLayout: 'layout1',
-  activeTheme: 'blue',
+  activeLayout: "layout1",
+  activeTheme: "blue",
   perfectScrollbar: false,
   themes: themes,
-  layout1Settings: layout1Settings,
+  layout1Settings: Layout1Settings,
   secondarySidebar: {
     show: true,
     open: false,
-    theme: 'slateDark1',
+    theme: "slateDark1",
   },
   footer: {
     show: true,
     fixed: false,
-    theme: 'slateDark1',
+    theme: "slateDark1",
   },
 };

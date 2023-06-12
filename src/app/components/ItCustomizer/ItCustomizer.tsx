@@ -17,6 +17,7 @@ import Scrollbar from "react-perfect-scrollbar";
 import { themeShadows } from "../ItTheme/themeColors";
 import { H5, Span } from "../Typography";
 import BadgeSelected from "./BadgeSelected";
+import { ItLayoutSettingsType } from "../ItLayout/settings";
 
 interface LabelProps {
   onClick: () => void;
@@ -102,7 +103,7 @@ const ItCustomizer = () => {
   const handleTabChange = (index: number) => setTabIndex(index);
 
   const activeTheme =
-    settings.themes[settings.activeTheme as keyof typeof settings.themes];
+    settings.themes![settings.activeTheme as keyof typeof settings.themes];
 
   return (
     <Fragment>
@@ -209,7 +210,13 @@ const ItCustomizer = () => {
   );
 };
 
-const demoLayouts = [
+export interface DemoLayouts {
+  isPro: boolean;
+  name: string;
+  thumbnail: string;
+  options: ItLayoutSettingsType;
+}
+const demoLayouts: DemoLayouts[] = [
   {
     isPro: false,
     name: "Light Sidebar",

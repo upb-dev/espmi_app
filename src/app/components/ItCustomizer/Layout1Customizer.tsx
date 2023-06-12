@@ -18,6 +18,7 @@ import { Fragment } from "react";
 import { themeColors, themeShadows } from "../ItTheme/themeColors";
 import BadgeSelected from "./BadgeSelected";
 import { mainSidebarThemes, topbarThemes } from "./customizerOptions";
+import { ItLayoutSettingsType } from "../ItLayout/settings";
 
 const sidebarBG = [
   "/assets/images/sidebar/sidebar-bg-dark.jpg",
@@ -35,7 +36,7 @@ const ToolbarContainer = styled("div")(() => ({
   flexWrap: "wrap",
 }));
 
-const ToolbarContent = styled("div")(({ color }) => ({
+const ToolbarContent = styled("div")(({ color }: { color: string }) => ({
   width: 40,
   height: 40,
   margin: "8px",
@@ -54,7 +55,19 @@ const IMG = styled("img")(() => ({
   display: "block",
 }));
 
-const Layout1Customizer = ({ settings, handleChange, handleControlChange }) => {
+interface Layout1CustomizerProps {
+  settings: ItLayoutSettingsType; // Ganti `SettingsType` dengan tipe yang sesuai untuk properti `settings`
+  handleChange: (path: string, value: any) => void; // Ubah `any` sesuai dengan tipe yang sesuai untuk properti `handleChange`
+  handleControlChange: (
+    path: string
+  ) => (event: React.ChangeEvent<HTMLInputElement>) => void; // Ubah `React.ChangeEvent<HTMLInputElement>` sesuai dengan tipe yang sesuai untuk properti `handleControlChange`
+}
+// TODO mulai dari sini ya
+const Layout1Customizer = ({
+  settings,
+  handleChange,
+  handleControlChange,
+}: Layout1CustomizerProps) => {
   return (
     <Fragment>
       <Box mb="16px" mx="12px">
