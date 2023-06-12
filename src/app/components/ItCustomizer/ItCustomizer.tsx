@@ -18,6 +18,7 @@ import { themeShadows } from "../ItTheme/themeColors";
 import { H5, Span } from "../Typography";
 import BadgeSelected from "./BadgeSelected";
 import { ItLayoutSettingsType } from "../ItLayout/settings";
+import { themes } from "../ItTheme/initThemes";
 
 interface LabelProps {
   onClick: () => void;
@@ -224,11 +225,29 @@ const demoLayouts: DemoLayouts[] = [
     options: {
       activeTheme: "blue",
       activeLayout: "layout1",
+      perfectScrollbar: false,
+      themes: themes,
+
       layout1Settings: {
-        topbar: { theme: "blueDark", fixed: true },
-        leftSidebar: { mode: "full", theme: "whiteBlue", bgOpacity: 0.98 },
+        topbar: { theme: "blueDark", fixed: true, show: true },
+        leftSidebar: {
+          mode: "full",
+          theme: "whiteBlue",
+          bgOpacity: 0.98,
+          bgImgURL: "/assets/images/sidebar/sidebar-bg-dark.jpg",
+          show: true,
+        },
       },
-      footer: { theme: "slateDark1" },
+      secondarySidebar: {
+        show: true,
+        open: false,
+        theme: "slateDark1",
+      },
+      footer: {
+        show: true,
+        fixed: false,
+        theme: "slateDark1",
+      },
     },
   },
   {
@@ -238,9 +257,28 @@ const demoLayouts: DemoLayouts[] = [
     options: {
       activeTheme: "blue",
       activeLayout: "layout1",
+      perfectScrollbar: false,
+      themes: themes,
+
       layout1Settings: {
-        topbar: { theme: "whiteBlue", fixed: true },
-        leftSidebar: { mode: "compact", theme: "slateDark1", bgOpacity: 0.92 },
+        topbar: { theme: "whiteBlue", fixed: true, show: true },
+        leftSidebar: {
+          mode: "compact",
+          theme: "slateDark1",
+          bgOpacity: 0.92,
+          bgImgURL: "/assets/images/sidebar/sidebar-bg-dark.jpg",
+          show: true,
+        },
+      },
+      secondarySidebar: {
+        show: true,
+        open: false,
+        theme: "slateDark1",
+      },
+      footer: {
+        show: true,
+        fixed: false,
+        theme: "slateDark1",
       },
     },
   },
@@ -251,9 +289,27 @@ const demoLayouts: DemoLayouts[] = [
     options: {
       activeTheme: "blue",
       activeLayout: "layout1",
+      perfectScrollbar: false,
+      themes: themes,
       layout1Settings: {
-        topbar: { theme: "blueDark", fixed: true },
-        leftSidebar: { mode: "full", theme: "slateDark1", bgOpacity: 0.92 },
+        topbar: { theme: "blueDark", fixed: true, show: true },
+        leftSidebar: {
+          mode: "full",
+          theme: "slateDark1",
+          bgOpacity: 0.92,
+          bgImgURL: "/assets/images/sidebar/sidebar-bg-dark.jpg",
+          show: true,
+        },
+      },
+      secondarySidebar: {
+        show: true,
+        open: false,
+        theme: "slateDark1",
+      },
+      footer: {
+        show: true,
+        fixed: false,
+        theme: "slateDark1",
       },
     },
   },

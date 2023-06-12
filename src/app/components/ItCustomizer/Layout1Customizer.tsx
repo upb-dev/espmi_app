@@ -62,7 +62,7 @@ interface Layout1CustomizerProps {
     path: string
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void; // Ubah `React.ChangeEvent<HTMLInputElement>` sesuai dengan tipe yang sesuai untuk properti `handleControlChange`
 }
-// TODO mulai dari sini ya
+
 const Layout1Customizer = ({
   settings,
   handleChange,
@@ -84,7 +84,10 @@ const Layout1Customizer = ({
                 {settings.layout1Settings.leftSidebar.theme === color && (
                   <Icon>done</Icon>
                 )}
-                <div className={settings.themes[color].palette.type}></div>
+                <div
+                // className={settings.themes[color].palette?.primary?.400}
+                ></div>
+                {/*TODO perubahan type =>  primary*/}
               </ToolbarContent>
             </Tooltip>
           ))}
@@ -105,7 +108,9 @@ const Layout1Customizer = ({
                 {settings.layout1Settings.topbar.theme === color && (
                   <Icon>done</Icon>
                 )}
-                <div className={settings.themes[color].palette.type}></div>
+                <div
+                // className={settings.themes[color].palette?.type}
+                ></div>
               </ToolbarContent>
             </Tooltip>
           ))}

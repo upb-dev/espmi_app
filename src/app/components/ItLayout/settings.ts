@@ -9,19 +9,19 @@ interface SecondarySidebar {
 }
 
 interface Footer {
-  show?: boolean;
-  fixed?: boolean;
+  show: boolean;
+  fixed: boolean;
   theme: string;
 }
 
 export interface ItLayoutSettingsType {
   activeLayout: string;
   activeTheme: string;
-  perfectScrollbar?: boolean;
-  themes?: Record<string, ThemeOptions>;
-  layout1Settings?: Layout1SettingsType;
-  secondarySidebar?: SecondarySidebar;
-  footer?: Footer;
+  perfectScrollbar: boolean;
+  themes: Record<string, ThemeOptions>;
+  layout1Settings: Layout1SettingsType;
+  secondarySidebar: SecondarySidebar;
+  footer: Footer;
 }
 
 // UPDATE BELOW CODE

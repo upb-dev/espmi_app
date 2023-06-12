@@ -72,10 +72,13 @@ const Layout1Sidenav = () => {
   };
   const primaryRGB = convertHexToRGB(theme.palette.primary.main);
 
-  const updateSidebarMode = (sidebarSettings) => {
+  const updateSidebarMode = (sidebarSettings: Record<string, any>) => {
     updateSettings({
+      ...settings,
       layout1Settings: {
+        ...settings.layout1Settings,
         leftSidebar: {
+          ...settings.layout1Settings.leftSidebar,
           ...sidebarSettings,
         },
       },
