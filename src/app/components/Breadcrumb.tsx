@@ -1,5 +1,18 @@
 import { Breadcrumbs, Hidden, Icon, styled, useTheme } from "@mui/material";
 import { NavLink } from "react-router-dom";
+// import { Theme, Palette } from "@mui/material/styles";
+
+// interface CustomPalette extends Palette {
+//   text: {
+//     primary: string;
+//     secondary: string;
+//     disable: string;
+//     hint: string;
+//   };
+// }
+// interface CustomTheme extends Theme {
+//   palette: CustomPalette;
+// }
 
 const BreadcrumbRoot = styled("div")(() => ({
   display: "flex",
@@ -24,7 +37,7 @@ const Separator = styled("h4")(({ theme }) => ({
   margin: 0,
   marginLeft: 8,
   paddingBottom: "3px",
-  color: theme.palette.text.hint,
+  color: theme.palette.text.primary, // FIXME : ubah primary ke hint
 }));
 
 const StyledIcon = styled(Icon)(() => ({
@@ -33,9 +46,9 @@ const StyledIcon = styled(Icon)(() => ({
   verticalAlign: "middle",
 }));
 
-const Breadcrumb = ({ routeSegments }) => {
+const Breadcrumb = ({ routeSegments }: { routeSegments: string[] }) => {
   const theme = useTheme();
-  const hint = theme.palette.text.hint;
+  const hint = theme.palette.text.primary; // FIXME : ubah primary ke hint
 
   return (
     <BreadcrumbRoot>

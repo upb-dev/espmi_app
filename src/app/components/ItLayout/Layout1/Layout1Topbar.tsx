@@ -10,7 +10,7 @@ import { Box, styled, useTheme } from "@mui/system";
 import ItMenu from "../../../components/ItMenu";
 import ItSearchBox from "../../../components/ItSearchBox";
 import { themeShadows } from "../../../components/ItTheme/themeColors";
-// import useAuth from "../../../hooks/userAuth";
+import useAuth from "../../../hooks/useAuth";
 import useSettings from "../../../hooks/useSettings";
 import { topBarHeight } from "../../../utils/constant";
 import React from "react";

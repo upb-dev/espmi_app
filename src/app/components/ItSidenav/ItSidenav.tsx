@@ -31,7 +31,7 @@ const SideNavOverlay = styled("div")(() => ({
 interface ItSidenavProps {
   sx?: SxProps;
   open: boolean;
-  children: ReactNode;
+  children: any;
   toggleSidenav: () => void;
   width?: string;
 }

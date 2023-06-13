@@ -106,7 +106,7 @@ const Layout1Sidenav = () => {
             />
           </Hidden>
         </Brand>
-        <Sidenav children />
+        <Sidenav />
       </NavListBox>
     </SidebarNavRoot>
   );
