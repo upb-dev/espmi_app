@@ -14,6 +14,7 @@ import {
 import useSettings from "../../hooks/useSettings";
 import { Fragment, useState } from "react";
 import Scrollbar from "react-perfect-scrollbar";
+import "react-perfect-scrollbar/dist/css/styles.css";
 import { themeShadows } from "../ItTheme/themeColors";
 import { H5, Span } from "../Typography";
 import BadgeSelected from "./BadgeSelected";
@@ -225,7 +226,7 @@ const demoLayouts: DemoLayouts[] = [
     options: {
       activeTheme: "blue",
       activeLayout: "layout1",
-      perfectScrollbar: false,
+      perfectScrollbar: true,
       themes: themes,
 
       layout1Settings: {
@@ -257,7 +258,7 @@ const demoLayouts: DemoLayouts[] = [
     options: {
       activeTheme: "blue",
       activeLayout: "layout1",
-      perfectScrollbar: false,
+      perfectScrollbar: true,
       themes: themes,
 
       layout1Settings: {
@@ -289,7 +290,7 @@ const demoLayouts: DemoLayouts[] = [
     options: {
       activeTheme: "blue",
       activeLayout: "layout1",
-      perfectScrollbar: false,
+      perfectScrollbar: true,
       themes: themes,
       layout1Settings: {
         topbar: { theme: "blueDark", fixed: true, show: true },

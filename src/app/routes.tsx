@@ -4,6 +4,7 @@ import dashboardRoutes from "./views/dashboard/DashboardRoutes";
 import sessionRoutes from "./views/sessions/SessionRoutes";
 import { Navigate } from "react-router-dom";
 import NotFound from "./views/sessions/NotFound";
+import standarMutu from "./views/standar-mutu/StandarMutuRoutes";
 
 const routes = [
   {
@@ -12,7 +13,7 @@ const routes = [
         <ItLayout />
       </AuthGuard>
     ),
-    children: [...dashboardRoutes, ...sessionRoutes],
+    children: [...dashboardRoutes, ...sessionRoutes, ...standarMutu],
   },
   { path: "/", element: <Navigate to="dashboard" /> },
   { path: "*", element: <NotFound /> },

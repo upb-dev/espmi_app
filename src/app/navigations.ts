@@ -22,11 +22,11 @@ export interface NavigationBadge {
 
 export const navigations: Navigation[] = [
   { name: "Dashboard", path: "/dashboard", icon: "dashboard" },
-  { label: "Master", type: "label" },
+  // { label: "Standar Mutu", type: "label" },
   {
-    name: "Master Data",
+    name: "Standar Mutu",
     icon: "dataset",
-    children: [{ name: "Project", iconText: "P", path: "/master/project" }],
+    children: [{ name: "Daftar Nilai Mutu", iconText: "NM", path: "/nilai-mutu" },{ name: "Daftar Standar Mutu", iconText: "SM", path: "/standar-mutu" }],
   },
   { label: "PAGES", type: "label" },
   {

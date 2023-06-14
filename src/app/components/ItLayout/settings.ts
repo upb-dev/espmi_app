@@ -15,6 +15,7 @@ interface Footer {
 }
 
 export interface ItLayoutSettingsType {
+  [key: string]: any;
   activeLayout: string;
   activeTheme: string;
   perfectScrollbar: boolean;
@@ -64,7 +65,7 @@ export const Layout1Settings: Layout1SettingsType = {
 export const ItLayoutSettings: ItLayoutSettingsType = {
   activeLayout: "layout1",
   activeTheme: "blue",
-  perfectScrollbar: false,
+  perfectScrollbar: true,
   themes: themes,
   layout1Settings: Layout1Settings,
   secondarySidebar: {

@@ -14,6 +14,11 @@ import { NavLink } from "react-router-dom";
 //   palette: CustomPalette;
 // }
 
+export interface RouteSegment {
+  name: string;
+  path?: string;
+}
+
 const BreadcrumbRoot = styled("div")(() => ({
   display: "flex",
   flexWrap: "wrap",
@@ -46,7 +51,7 @@ const StyledIcon = styled(Icon)(() => ({
   verticalAlign: "middle",
 }));
 
-const Breadcrumb = ({ routeSegments }: { routeSegments: string[] }) => {
+const Breadcrumb = ({ routeSegments }: { routeSegments: RouteSegment[] }) => {
   const theme = useTheme();
   const hint = theme.palette.text.primary; // FIXME : ubah primary ke hint
 
@@ -72,7 +77,7 @@ const Breadcrumb = ({ routeSegments }: { routeSegments: string[] }) => {
         {routeSegments
           ? routeSegments.map((route, index) => {
               return index !== routeSegments.length - 1 ? (
-                <NavLink key={index} to={route.path}>
+                <NavLink key={index} to={route.path!}>
                   <SubName>{route.name}</SubName>
                 </NavLink>
               ) : (

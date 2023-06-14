@@ -4,6 +4,7 @@ import useSettings from "../hooks/useSettings";
 import { navigations } from "../navigations";
 import { Fragment } from "react";
 import Scrollbar from "react-perfect-scrollbar";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 const StyledScrollBar = styled(Scrollbar)(() => ({
   paddingLeft: "1rem",
@@ -30,7 +31,7 @@ interface SideNavProps {
 const Sidenav = ({ children }: SideNavProps) => {
   const { settings, updateSettings } = useSettings();
 
-  const updateSidebarMode = (sidebarSettings) => {
+  const updateSidebarMode = (sidebarSettings: Record<string, string>) => {
     const activeLayoutSettingsName = settings.activeLayout + "Settings";
     const activeLayoutSettings = settings[activeLayoutSettingsName];
 

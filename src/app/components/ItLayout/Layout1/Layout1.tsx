@@ -5,6 +5,7 @@ import useSettings from "../../../hooks/useSettings";
 import { sidenavCompactWidth, sideNavWidth } from "../../../utils/constant";
 import React, { useEffect, useRef } from "react";
 import Scrollbar from "react-perfect-scrollbar";
+import "react-perfect-scrollbar/dist/css/styles.css";
 import { Outlet } from "react-router-dom";
 import Footer from "../../Footer";
 import SidenavTheme from "../../ItTheme/SidenavTheme/SidenavTheme";
