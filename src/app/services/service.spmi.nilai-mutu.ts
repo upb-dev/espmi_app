@@ -1,17 +1,17 @@
 import Axios from "../axios";
 import { AxiosResponse } from "axios";
 import { SpmiNilaiMutu } from "../models/spmi.nilai-mutu";
-import { ResponseApi, ResponsePaginate } from "../models/response";
+import { ResponseApi } from "../models/response";
 
 
 export const SpmiNilaiMutuService = {
-    async getListNilaiMutu(): Promise<ResponsePaginate<SpmiNilaiMutu[]>> {
-        const response: AxiosResponse<ResponseApi<ResponsePaginate<SpmiNilaiMutu[]>>> = await Axios({
+    async getListNilaiMutu(): Promise<ResponseApi<SpmiNilaiMutu[]>> {
+        const response: AxiosResponse<ResponseApi<SpmiNilaiMutu[]>> = await Axios({
             method: "GET",
-            url: "/api/nilai-mutu/?back_office",
+            url: `/api/nilai-mutu/?back_office&no_page`,
 
         });
-        return response.data.data;
+        return response.data;
     },
 
     async getNilaiMutuById(id: string): Promise<SpmiNilaiMutu> {

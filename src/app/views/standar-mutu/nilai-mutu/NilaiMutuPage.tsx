@@ -5,12 +5,11 @@ import {
   IconButton,
   Icon,
   TableRow,
-  Typography,
 } from "@mui/material";
 import { spmiNilaiMutuStore } from "../../../stores/store.spmi.nilai-mutu";
 import Breadcrumb from "../../../components/Breadcrumb";
 import SimpleCard from "../../../components/SimpleCard";
-//   import PaginationTable from "../PaginationTable";
+import PaginationTable from "../PaginationTable";
 
 import { useEffect, useState } from "react";
 import ItLoading from "../../../components/ItLoading";
@@ -28,7 +27,7 @@ const Container = styled("div")(({ theme }) => ({
   },
 }));
 
-const HeaderContainer = styled(Box)(({ theme }) => ({
+const HeaderContainer = styled(Box)(() => ({
   paddingBottom: 16,
   height: "100%",
   display: "flex",
@@ -37,11 +36,12 @@ const HeaderContainer = styled(Box)(({ theme }) => ({
 }));
 
 const NilaiMutuPage = () => {
-  const { loading, listSpmiNilaiMutu, getListNilaiMutu } = spmiNilaiMutuStore();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [edit, setEdit] = useState(null);
-  const [loadingForm, setLoadingForm] = useState(false);
+  const { loading, error, listSpmiNilaiMutu, getListNilaiMutu } =
+    spmiNilaiMutuStore();
+  const [page, setPage] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  // const [edit, setEdit] = useState(null);
+  // const [loadingForm, setLoadingForm] = useState(false);
 
   //   const dispatch = useDispatch();
 
@@ -54,16 +54,16 @@ const NilaiMutuPage = () => {
   //     dispatch(resetState());
   //   }
 
-  //   const handleChangePage = (_, newPage) => {
-  //     setPage(newPage);
-  //     dispatch(getProjectList(page + 1, rowsPerPage));
-  //   };
+  const handleChangePage = (newPage: number) => {
+    setPage(newPage);
+    getListNilaiMutu(page + 1, rowsPerPage);
+  };
 
-  //   const handleChangeRowsPerPage = (event) => {
-  //     setRowsPerPage(+event.target.value);
-  //     setPage(0);
-  //     dispatch(getProjectList(page + 1, rowsPerPage));
-  //   };
+  const handleChangeRowsPerPage = (event: any) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+    getListNilaiMutu(page + 1, rowsPerPage);
+  };
 
   //   useEffect(() => {
   //     dispatch(getProjectList(page + 1, rowsPerPage));
@@ -81,24 +81,29 @@ const NilaiMutuPage = () => {
   //   };
 
   useEffect(() => {
-    getListNilaiMutu();
-  }, []);
-  const headers = ["Code", "Name"];
+    getListNilaiMutu(page + 1, rowsPerPage);
+  }, [page, rowsPerPage]);
+  const headers = ["Nilai Mutu", "Deskripsi", "Tahun", "Lembaga"];
 
-  //   const dataProject = projects.map((project, index) => (
-  //     <TableRow key={index}>
-  //       <TableCell align="left">{project.code}</TableCell>
-  //       <TableCell align="center">{project.name}</TableCell>
-  //       <TableCell align="right">
-  //         <IconButton>
-  //           <Icon color="error">close</Icon>
-  //         </IconButton>
-  //         <IconButton onClick={() => handleEdit(projects[index].id)}>
-  //           <Icon color="success">edit</Icon>
-  //         </IconButton>
-  //       </TableCell>
-  //     </TableRow>
-  //   ));
+  const dataNilaiMutu = listSpmiNilaiMutu?.data.map((nilaiMutu, index) => (
+    <TableRow key={index}>
+      <TableCell align="left">{nilaiMutu.nilai_mutu}</TableCell>
+      <TableCell align="center">{nilaiMutu.desc}</TableCell>
+      <TableCell align="center">{nilaiMutu.tahun_data.tahun}</TableCell>
+      <TableCell align="center">
+        {nilaiMutu.lembaga_akreditasi_data.name}
+      </TableCell>
+
+      <TableCell align="right">
+        <IconButton>
+          <Icon color="error">close</Icon>
+        </IconButton>
+        {/* <IconButton onClick={() => handleEdit(projects[index].id)}>
+          <Icon color="success">edit</Icon>
+        </IconButton> */}
+      </TableCell>
+    </TableRow>
+  ));
 
   return (
     <div>
@@ -125,25 +130,21 @@ const NilaiMutuPage = () => {
             />
           </Box> */}
         </HeaderContainer>
-        {loading ? (
-          <Typography>loading...</Typography>
-        ) : (
-          <Typography>aman</Typography>
-        )}
+        {/* {loading ? <ItLoading /> : <Typography>aman</Typography>} */}
 
-        {/* {loading ? (
+        {loading ? (
           <ItLoading />
         ) : error ? (
           <Alert sx={{ m: 1 }} severity="error" variant="filled">
             {error}
           </Alert>
-        ) : (
-          <SimpleCard title="List Project">
+        ) : listSpmiNilaiMutu !== null ? (
+          <SimpleCard title="Daftar Penilaian Mutu">
             <PaginationTable
               page={page}
-              count={totalItems}
+              count={listSpmiNilaiMutu?.data.length}
               headers={headers}
-              data={dataProject}
+              data={dataNilaiMutu}
               setPage={setPage}
               rowsPerPage={rowsPerPage}
               setRowsPerPage={setRowsPerPage}
@@ -151,7 +152,9 @@ const NilaiMutuPage = () => {
               handleChangeRowsPerPage={handleChangeRowsPerPage}
             />
           </SimpleCard>
-        )} */}
+        ) : (
+          <ItLoading />
+        )}
       </Container>
 
       {/* <ToastContainer

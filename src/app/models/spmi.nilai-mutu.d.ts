@@ -5,6 +5,6 @@ import { SpmiTahunPeriode } from "./spmi.tahun-periode";
 export interface SpmiNilaiMutu extends SpmiBase {
     nilai_mutu: number,
     desc: string;
-    tahun_date: SpmiTahunPeriode;
-    lembaga_akreditasi: SpmiLembagaAkreditasi
+    tahun_data: SpmiTahunPeriode;
+    lembaga_akreditasi_data: SpmiLembagaAkreditasi
 }
