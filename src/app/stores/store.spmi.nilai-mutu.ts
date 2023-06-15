@@ -53,7 +53,8 @@ export const spmiNilaiMutuStore = create<SpmiNilaiMutuState>()(
                 } catch (error) {
                     set((prevState) => ({
                         ...prevState,
-                        loading: false
+                        loading: false,
+                        error: true,
                     }), false, "gagal get list nilai mutu")
                     throw error
                 } finally {
