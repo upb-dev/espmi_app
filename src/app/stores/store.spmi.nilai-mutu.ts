@@ -1,15 +1,17 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import { SpmiNilaiMutu } from '../models/spmi.nilai-mutu'
+import { SpmiNilaiMutu, SpmiNilaiMutuDataTable } from '../models/spmi.nilai-mutu'
 import { SpmiNilaiMutuService } from '../services/service.spmi.nilai-mutu';
-import { ResponsePaginate } from '../models/response';
+import { ResponseApi } from '../models/response';
 
 type SpmiNilaiMutuState = {
     loading: boolean;
     error: boolean;
     spmiNilaiMutu?: SpmiNilaiMutu;
-    listSpmiNilaiMutu: ResponsePaginate<SpmiNilaiMutu> | null;
-    getListNilaiMutu: (page: number, size: number) => Promise<void>;
+    spmiNilaiMutuDataTable: SpmiNilaiMutuDataTable[];
+    listSpmiNilaiMutu: ResponseApi<SpmiNilaiMutu[]> | null;
+    getListNilaiMutu: () => Promise<void>;
+    setDataTable: (data: SpmiNilaiMutu[]) => void
 }
 
 export const spmiNilaiMutuStore = create<SpmiNilaiMutuState>()(
@@ -19,17 +21,35 @@ export const spmiNilaiMutuStore = create<SpmiNilaiMutuState>()(
             error: false,
             spmiNilaiMutu: undefined,
             listSpmiNilaiMutu: null,
-            getListNilaiMutu: async (page: number, size: number): Promise<void> => {
+            spmiNilaiMutuDataTable: [],
+            getListNilaiMutu: async (): Promise<void> => {
+                const returnData: SpmiNilaiMutuDataTable[] = []
                 try {
                     set((prevState) => ({
                         ...prevState,
                         loading: true
                     }), false, "get list nilai mutu")
-                    const result = await SpmiNilaiMutuService.getListNilaiMutu(page, size)
+                    const result = await SpmiNilaiMutuService.getListNilaiMutu()
                     set((prevState) => ({
                         ...prevState,
                         listSpmiNilaiMutu: result
-                    }), false, "getting list nilai mutu success")
+                    }), false, "getting list nilai mutu success"),
+                        result.data.map((nilaiMutu: SpmiNilaiMutu, i: number) => {
+                            returnData.push(
+                                {
+                                    id: i + 1,
+                                    nilai_mutu: nilaiMutu.nilai_mutu,
+                                    desc: nilaiMutu.desc,
+                                    tahun: nilaiMutu.tahun_data.tahun,
+                                    lembaga_akreditasi: nilaiMutu.lembaga_akreditasi_data.name
+                                }
+                            )
+
+                        });
+                    set((prevState) => ({
+                        ...prevState,
+                        spmiNilaiMutuDataTable: returnData
+                    }), false, "set data table")
                 } catch (error) {
                     set((prevState) => ({
                         ...prevState,
@@ -42,7 +62,33 @@ export const spmiNilaiMutuStore = create<SpmiNilaiMutuState>()(
                         loading: false
                     }), false, "get list nilai mutu finish")
                 }
+            },
+            setDataTable: (data: SpmiNilaiMutu[]) => {
+                const result: SpmiNilaiMutuDataTable[] = []
+                try {
+                    data.map((nilaiMutu: SpmiNilaiMutu, i: number) => {
+                        result.push(
+                            {
+                                id: i + 1,
+                                nilai_mutu: nilaiMutu.nilai_mutu,
+                                desc: nilaiMutu.desc,
+                                tahun: nilaiMutu.tahun_data.tahun,
+                                lembaga_akreditasi: nilaiMutu.lembaga_akreditasi_data.name
+                            }
+                        )
+
+                    });
+                    set((prevStatet) => ({
+                        ...prevStatet,
+                        spmiNilaiMutuDataTable: result
+                    }), false, "set data table")
+                } catch (error) {
+                    throw error
+                }
             }
+
         }
+
     ))
+
 )

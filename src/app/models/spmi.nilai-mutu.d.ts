@@ -8,3 +8,11 @@ export interface SpmiNilaiMutu extends SpmiBase {
     tahun_data: SpmiTahunPeriode;
     lembaga_akreditasi_data: SpmiLembagaAkreditasi
 }
+
+export interface SpmiNilaiMutuDataTable {
+    id: number;
+    nilai_mutu: number;
+    desc: string;
+    tahun: number;
+    lembaga_akreditasi: string
+}

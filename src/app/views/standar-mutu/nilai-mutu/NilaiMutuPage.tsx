@@ -1,19 +1,12 @@
-import {
-  Box,
-  styled,
-  TableCell,
-  IconButton,
-  Icon,
-  TableRow,
-} from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { spmiNilaiMutuStore } from "../../../stores/store.spmi.nilai-mutu";
 import Breadcrumb from "../../../components/Breadcrumb";
 import SimpleCard from "../../../components/SimpleCard";
-import PaginationTable from "../PaginationTable";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ItLoading from "../../../components/ItLoading";
 import { Alert } from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 //   import FormDialog from "./FormDialog";
 //   import { ToastContainer } from "react-toastify";
 //   import "react-toastify/dist/ReactToastify.css";
@@ -36,10 +29,13 @@ const HeaderContainer = styled(Box)(() => ({
 }));
 
 const NilaiMutuPage = () => {
-  const { loading, error, listSpmiNilaiMutu, getListNilaiMutu } =
-    spmiNilaiMutuStore();
-  const [page, setPage] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const {
+    loading,
+    error,
+    listSpmiNilaiMutu,
+    spmiNilaiMutuDataTable,
+    getListNilaiMutu,
+  } = spmiNilaiMutuStore();
   // const [edit, setEdit] = useState(null);
   // const [loadingForm, setLoadingForm] = useState(false);
 
@@ -53,17 +49,6 @@ const NilaiMutuPage = () => {
   //   function handleClose() {
   //     dispatch(resetState());
   //   }
-
-  const handleChangePage = (newPage: number) => {
-    setPage(newPage);
-    getListNilaiMutu(page + 1, rowsPerPage);
-  };
-
-  const handleChangeRowsPerPage = (event: any) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-    getListNilaiMutu(page + 1, rowsPerPage);
-  };
 
   //   useEffect(() => {
   //     dispatch(getProjectList(page + 1, rowsPerPage));
@@ -79,31 +64,31 @@ const NilaiMutuPage = () => {
   //     dispatch(editProject(id));
   //     setEdit(id);
   //   };
-
+  const columns: GridColDef[] = [
+    { field: "id", headerName: "No", width: 70 },
+    {
+      field: "nilai_mutu",
+      headerName: "Nilai Mutu",
+      type: "number",
+      width: 200,
+    },
+    { field: "desc", headerName: "Deskripsi", width: 400 },
+    {
+      field: "tahun",
+      headerName: "Tahun",
+      type: "string",
+      width: 200,
+    },
+    {
+      field: "lembaga_akreditasi",
+      headerName: "Lembaga Akreditasi",
+      type: "string",
+      width: 400,
+    },
+  ];
   useEffect(() => {
-    getListNilaiMutu(page + 1, rowsPerPage);
-  }, [page, rowsPerPage]);
-  const headers = ["Nilai Mutu", "Deskripsi", "Tahun", "Lembaga"];
-
-  const dataNilaiMutu = listSpmiNilaiMutu?.data.map((nilaiMutu, index) => (
-    <TableRow key={index}>
-      <TableCell align="left">{nilaiMutu.nilai_mutu}</TableCell>
-      <TableCell align="center">{nilaiMutu.desc}</TableCell>
-      <TableCell align="center">{nilaiMutu.tahun_data.tahun}</TableCell>
-      <TableCell align="center">
-        {nilaiMutu.lembaga_akreditasi_data.name}
-      </TableCell>
-
-      <TableCell align="right">
-        <IconButton>
-          <Icon color="error">close</Icon>
-        </IconButton>
-        {/* <IconButton onClick={() => handleEdit(projects[index].id)}>
-          <Icon color="success">edit</Icon>
-        </IconButton> */}
-      </TableCell>
-    </TableRow>
-  ));
+    getListNilaiMutu();
+  }, []);
 
   return (
     <div>
@@ -130,8 +115,6 @@ const NilaiMutuPage = () => {
             />
           </Box> */}
         </HeaderContainer>
-        {/* {loading ? <ItLoading /> : <Typography>aman</Typography>} */}
-
         {loading ? (
           <ItLoading />
         ) : error ? (
@@ -140,17 +123,19 @@ const NilaiMutuPage = () => {
           </Alert>
         ) : listSpmiNilaiMutu !== null ? (
           <SimpleCard title="Daftar Penilaian Mutu">
-            <PaginationTable
-              page={page}
-              count={listSpmiNilaiMutu?.data.length}
-              headers={headers}
-              data={dataNilaiMutu}
-              setPage={setPage}
-              rowsPerPage={rowsPerPage}
-              setRowsPerPage={setRowsPerPage}
-              handleChangePage={handleChangePage}
-              handleChangeRowsPerPage={handleChangeRowsPerPage}
-            />
+            <div style={{ height: "100%", width: "100%" }}>
+              <DataGrid
+                rows={spmiNilaiMutuDataTable}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: { page: 0, pageSize: 5 },
+                  },
+                }}
+                pageSizeOptions={[5, 10]}
+                checkboxSelection
+              />
+            </div>
           </SimpleCard>
         ) : (
           <ItLoading />
