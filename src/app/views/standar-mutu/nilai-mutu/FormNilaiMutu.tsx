@@ -12,12 +12,14 @@ import { Formik } from "formik";
 import { SpmiNilaiMutuPayload } from "../../../types/spmi.nilai-mutu";
 import { SpmiTahunPeriode } from "../../../types/spmi.tahun-periode";
 import { SpmiLembagaAkreditasi } from "../../../types/spmi.lembaga-akreditasi";
+import { SpmiNilaiMutuService } from "../../../services/service.spmi.nilai-mutu";
+import Swal from "sweetalert2";
 
 const validationProject = Yup.object().shape({
   nilai_mutu: Yup.string().required("Nilai mutu is required !"),
   desc: Yup.string().required("Description is required !"),
-  lembaga_id: Yup.string().required("Lembaga harus dipilih"),
-  tahun_id: Yup.string().required("Tahun harus dipilih"),
+  lembaga_akreditasi: Yup.string().required("Lembaga harus dipilih"),
+  tahun: Yup.string().required("Tahun harus dipilih"),
 });
 
 interface FormNilaiMutuProps {
@@ -56,10 +58,10 @@ const FormNilaiMutu: React.FC<FormNilaiMutuProps> = (props) => {
   ) {
     if (value !== null) {
       setSelectedTahun(value);
-      values.tahun_id = value.id;
+      values.tahun = value.id;
     } else {
       setSelectedTahun(null);
-      values.tahun_id = null;
+      values.tahun = null;
     }
   }
   function handleLembagaChange(
@@ -68,26 +70,58 @@ const FormNilaiMutu: React.FC<FormNilaiMutuProps> = (props) => {
   ) {
     if (value !== null) {
       setSelectedLembaga(value);
-      values.lembaga_id = value.id;
+      values.lembaga_akreditasi = value.id;
     } else {
       setSelectedLembaga(null);
-      values.lembaga_id = null;
+      values.lembaga_akreditasi = null;
     }
   }
-
-  //   const dispatch = useDispatch();
 
   const handleFormSubmit = (values: SpmiNilaiMutuPayload) => {
     setLoadingForm(true);
     if (id != null) {
-      // dispatch(updateProject(id, values));
-      console.log(values);
+      SpmiNilaiMutuService.updateNilaiMutuById(id, values)
+        .then((result) => {
+          console.log(result);
+          setLoadingForm(false);
+          Swal.fire({
+            title: "Sukses",
+            text: "Data Penilaian Mutu di Update",
+            icon: "success",
+          });
+          handleClose();
+        })
+        .catch((err) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+          setLoadingForm(false);
+          console.log(err);
+        });
     } else {
-      // dispatch(createProject(values));
-      console.log(values);
+      SpmiNilaiMutuService.createNilaiMutu(values)
+        .then((result) => {
+          console.log(result);
+          Swal.fire({
+            title: "Sukses",
+            text: "Data Penilaian Mutu Disimpan",
+            icon: "success",
+          });
+          setLoadingForm(false);
+          handleClose();
+        })
+        .catch((err) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+          setLoadingForm(false);
+          console.log(err);
+        });
     }
-    setLoadingForm(false);
-    handleClose();
   };
 
   function handleSelectedItem() {
@@ -101,6 +135,21 @@ const FormNilaiMutu: React.FC<FormNilaiMutuProps> = (props) => {
   useEffect(() => {
     handleSelectedItem();
   }, [open]);
+
+  useEffect(() => {
+    if (initialValues.lembaga_akreditasi !== null) {
+      const lembaga = listLembagaAkreditasi!.find(
+        (result) => result!.id! === initialValues!.lembaga_akreditasi!
+      );
+      setSelectedLembaga(lembaga as SpmiLembagaAkreditasi);
+    }
+    if (initialValues.tahun !== null) {
+      const tahun = listTahunPeriode.find(
+        (result) => result.id === initialValues.tahun
+      );
+      setSelectedTahun(tahun as SpmiTahunPeriode);
+    }
+  }, [initialValues]);
 
   return (
     <Box>
@@ -133,7 +182,7 @@ const FormNilaiMutu: React.FC<FormNilaiMutuProps> = (props) => {
               <DialogContent>
                 <Box paddingTop={2}>
                   <Autocomplete
-                    id="tahun_id"
+                    id="tahun"
                     options={listTahunPeriode}
                     value={selectedTahun}
                     size="small"
@@ -152,17 +201,17 @@ const FormNilaiMutu: React.FC<FormNilaiMutuProps> = (props) => {
                         {...params}
                         label="Pilih Tahun Periode"
                         variant="outlined"
-                        name="tahun_id"
+                        name="tahun"
                         fullWidth
-                        error={Boolean(errors.tahun_id && touched.tahun_id)}
-                        helperText={touched.tahun_id && errors.tahun_id}
+                        error={Boolean(errors.tahun && touched.tahun)}
+                        helperText={touched.tahun && errors.tahun}
                       />
                     )}
                   />
                 </Box>
                 <Box paddingTop={2}>
                   <Autocomplete
-                    id="lembaga_id"
+                    id="lembaga_akreditasi"
                     options={listLembagaAkreditasi}
                     value={selectedLembaga}
                     size="small"
@@ -181,10 +230,16 @@ const FormNilaiMutu: React.FC<FormNilaiMutuProps> = (props) => {
                         {...params}
                         label="Pilih Lembaga Akreditasi"
                         variant="outlined"
-                        name="lembaga_id"
+                        name="lembaga_akreditasi"
                         fullWidth
-                        error={Boolean(errors.lembaga_id && touched.lembaga_id)}
-                        helperText={touched.lembaga_id && errors.lembaga_id}
+                        error={Boolean(
+                          errors.lembaga_akreditasi &&
+                            touched.lembaga_akreditasi
+                        )}
+                        helperText={
+                          touched.lembaga_akreditasi &&
+                          errors.lembaga_akreditasi
+                        }
                       />
                     )}
                   />
@@ -234,7 +289,7 @@ const FormNilaiMutu: React.FC<FormNilaiMutuProps> = (props) => {
                   type="submit"
                   color="primary"
                   //   disabled={
-                  //     values.lembaga_id === null || values.tahun_id === null
+                  //     values.lembaga_id === null || values.tahun === null
                   //   }
                   loading={loading!}
                   variant="contained"

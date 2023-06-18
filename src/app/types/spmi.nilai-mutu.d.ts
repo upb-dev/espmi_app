@@ -20,6 +20,6 @@ export interface SpmiNilaiMutuDataTable {
 export interface SpmiNilaiMutuPayload {
     nilai_mutu: number | null,
     desc?: string | null;
-    tahun_id?: string | null;
-    lembaga_id?: string | null
+    tahun?: string | null;
+    lembaga_akreditasi?: string | null
 }

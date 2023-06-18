@@ -98,9 +98,9 @@ export const spmiNilaiMutuActivity = create<NilaiMutuActivityState>()(
         activity: 'add',
         initialValue: {
             desc: null,
-            lembaga_id: null,
+            lembaga_akreditasi: null,
             nilai_mutu: null,
-            tahun_id: null
+            tahun: null
         },
         setActivity: (activity: string, data?: SpmiNilaiMutu) => {
             switch (activity) {
@@ -109,9 +109,9 @@ export const spmiNilaiMutuActivity = create<NilaiMutuActivityState>()(
                         activity: activity,
                         initialValue: {
                             desc: '',
-                            lembaga_id: null,
+                            lembaga_akreditasi: null,
                             nilai_mutu: 0,
-                            tahun_id: null
+                            tahun: null
                         },
                     }))
                     break
@@ -120,9 +120,9 @@ export const spmiNilaiMutuActivity = create<NilaiMutuActivityState>()(
                         activity: activity,
                         initialValue: {
                             desc: data!.desc,
-                            lembaga_id: data!.lembaga_akreditasi_data.id,
+                            lembaga_akreditasi: data!.lembaga_akreditasi_data.id,
                             nilai_mutu: data!.nilai_mutu,
-                            tahun_id: data!.tahun_data.id
+                            tahun: data!.tahun_data.id
                         },
                     }))
                     break
@@ -131,9 +131,9 @@ export const spmiNilaiMutuActivity = create<NilaiMutuActivityState>()(
                         activity: activity,
                         initialValue: {
                             desc: '',
-                            lembaga_id: null,
+                            lembaga_akreditasi: null,
                             nilai_mutu: 0,
-                            tahun_id: null
+                            tahun: null
                         },
                     }))
                     break

@@ -28,7 +28,6 @@ export const SpmiNilaiMutuService = {
         const response: AxiosResponse<ResponseApi<SpmiNilaiMutu[]>> = await Axios({
             method: "GET",
             url: url,
-
         });
         return response.data;
     },
@@ -42,17 +41,18 @@ export const SpmiNilaiMutuService = {
         return response.data.data
     },
 
-    async updateNilaiMutuById(id: string, payload: Partial<SpmiNilaiMutu>): Promise<SpmiNilaiMutu> {
+    async updateNilaiMutuById(id: string, payload: SpmiNilaiMutuPayload): Promise<SpmiNilaiMutu> {
         const response: AxiosResponse<ResponseApi<SpmiNilaiMutu>> = await Axios({
             method: "PUT",
+            url: `/api/nilai-mutu/${id}/?back_office`,
             data: payload,
-            params: { id }
         })
         return response.data.data
     },
     async createNilaiMutu(payload: SpmiNilaiMutuPayload): Promise<SpmiNilaiMutu> {
         const response: AxiosResponse<ResponseApi<SpmiNilaiMutu>> = await Axios({
             method: "POST",
+            url: "/api/nilai-mutu/?back_office",
             data: payload,
 
         })
@@ -61,6 +61,7 @@ export const SpmiNilaiMutuService = {
     async deleteNilaiMutu(id: string): Promise<SpmiNilaiMutu> {
         const response: AxiosResponse<ResponseApi<SpmiNilaiMutu>> = await Axios({
             method: "DELETE",
+            url: `/api/nilai-mutu/${id}/?back_office`,
             params: { id }
         })
         return response.data.data

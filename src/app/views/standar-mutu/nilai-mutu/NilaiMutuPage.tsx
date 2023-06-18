@@ -118,7 +118,6 @@ const NilaiMutuPage = () => {
     } else {
       updatedParam.lembaga = undefined;
     }
-    console.log("update", updatedParam);
     setParam(updatedParam);
     // getListNilaiMutu(param);
   }
@@ -191,10 +190,15 @@ const NilaiMutuPage = () => {
       headerName: "Actions",
       width: 150,
       renderCell: (params) => {
-        const handleDelete = () => {
-          const id = params.id;
+        const handleUpdate = () => {
+          const id = parseInt(params.id.toString());
+
+          const nilaiMutu = listSpmiNilaiMutu?.data[id - 1];
           // Lakukan aksi penghapusan dengan menggunakan ID
-          console.log(`Delete row with ID ${id}`);
+          setActivity("edit", nilaiMutu);
+          setOpen(true);
+          setEdit(nilaiMutu!.id!);
+          console.log(`Delete row with ID ${JSON.stringify(nilaiMutu)}`);
         };
 
         return (
@@ -202,7 +206,7 @@ const NilaiMutuPage = () => {
             size="small"
             variant="outlined"
             color="secondary"
-            onClick={handleDelete}
+            onClick={handleUpdate}
           >
             Update
           </Button>
@@ -211,16 +215,13 @@ const NilaiMutuPage = () => {
     },
   ];
   useEffect(() => {
-    getListNilaiMutu();
-    getListTahunPeriode();
-    getLembagaAkreditasi();
-  }, []);
-
-  useEffect(() => {
     getListNilaiMutu(param);
+    if (listLembagaAkreditasi.length === 0 || listTahunPeriode.length === 0) {
+      getListTahunPeriode();
+      getLembagaAkreditasi();
+    }
   }, [param]);
 
-  console.log(param);
   return (
     <div>
       <Container>
@@ -342,7 +343,7 @@ const NilaiMutuPage = () => {
                       </Paper>
                       <Button
                         variant="contained"
-                        color="secondary"
+                        color="error"
                         onClick={handleDelete}
                         disabled={deleteButtonDisabled}
                       >
