@@ -1,7 +1,7 @@
 import Axios from "../axios";
 import { AxiosResponse } from "axios";
-import { SpmiTahunPeriode } from "../models/spmi.tahun-periode";
-import { ResponseApi } from "../models/response";
+import { SpmiTahunPeriode } from "../types/spmi.tahun-periode";
+import { ResponseApi } from "../types/response";
 
 export const SpmiTahunPeriodeService = {
     async getListTahunPeriode(): Promise<ResponseApi<SpmiTahunPeriode[]>> {

@@ -16,3 +16,10 @@ export interface SpmiNilaiMutuDataTable {
     tahun: number;
     lembaga_akreditasi: string
 }
+
+export interface SpmiNilaiMutuPayload {
+    nilai_mutu: number | null,
+    desc?: string | null;
+    tahun_id?: string | null;
+    lembaga_id?: string | null
+}

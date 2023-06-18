@@ -1,14 +1,33 @@
 import Axios from "../axios";
 import { AxiosResponse } from "axios";
-import { SpmiNilaiMutu } from "../models/spmi.nilai-mutu";
-import { ResponseApi } from "../models/response";
+import { SpmiNilaiMutu, SpmiNilaiMutuPayload } from "../types/spmi.nilai-mutu";
+import { ResponseApi } from "../types/response";
 
+export interface SpmiServiceProps {
+    tahun?: number;
+    lembaga?: string;
+    search?: string
+}
 
 export const SpmiNilaiMutuService = {
-    async getListNilaiMutu(): Promise<ResponseApi<SpmiNilaiMutu[]>> {
+    async getListNilaiMutu(params?: SpmiServiceProps): Promise<ResponseApi<SpmiNilaiMutu[]>> {
+        let url = `/api/nilai-mutu/?back_office&no_page`
+
+        if (params?.tahun !== undefined) {
+            url += `&tahun=${params?.tahun}`
+        }
+
+        if (params?.lembaga !== undefined) {
+            url += `&lembaga=${params?.lembaga}`
+
+        }
+        if (params?.search !== undefined) {
+            url += `&search=${params?.search}`
+        }
+
         const response: AxiosResponse<ResponseApi<SpmiNilaiMutu[]>> = await Axios({
             method: "GET",
-            url: `/api/nilai-mutu/?back_office&no_page`,
+            url: url,
 
         });
         return response.data;
@@ -31,7 +50,14 @@ export const SpmiNilaiMutuService = {
         })
         return response.data.data
     },
+    async createNilaiMutu(payload: SpmiNilaiMutuPayload): Promise<SpmiNilaiMutu> {
+        const response: AxiosResponse<ResponseApi<SpmiNilaiMutu>> = await Axios({
+            method: "POST",
+            data: payload,
 
+        })
+        return response.data.data
+    },
     async deleteNilaiMutu(id: string): Promise<SpmiNilaiMutu> {
         const response: AxiosResponse<ResponseApi<SpmiNilaiMutu>> = await Axios({
             method: "DELETE",
