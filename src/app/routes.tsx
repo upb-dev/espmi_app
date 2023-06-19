@@ -5,6 +5,7 @@ import sessionRoutes from "./views/sessions/SessionRoutes";
 import { Navigate } from "react-router-dom";
 import NotFound from "./views/sessions/NotFound";
 import standarMutu from "./views/standar-mutu/StandarMutuRoutes";
+import evaluasiDiri from "./views/evaluasi-diri/EvaluasiDiriRoutes";
 
 const routes = [
   {
@@ -13,7 +14,12 @@ const routes = [
         <ItLayout />
       </AuthGuard>
     ),
-    children: [...dashboardRoutes, ...sessionRoutes, ...standarMutu],
+    children: [
+      ...dashboardRoutes,
+      ...sessionRoutes,
+      ...standarMutu,
+      ...evaluasiDiri,
+    ],
   },
   { path: "/", element: <Navigate to="dashboard" /> },
   { path: "*", element: <NotFound /> },

@@ -22,11 +22,21 @@ export interface NavigationBadge {
 
 export const navigations: Navigation[] = [
   { name: "Dashboard", path: "/dashboard", icon: "dashboard" },
-  // { label: "Standar Mutu", type: "label" },
+  { label: "Manajemen Data", type: "label" },
   {
     name: "Standar Mutu",
-    icon: "dataset",
-    children: [{ name: "Daftar Nilai Mutu", iconText: "NM", path: "/nilai-mutu" },{ name: "Daftar Standar Mutu", iconText: "SM", path: "/standar-mutu" }],
+    icon: "list",
+    children: [
+      { name: "Daftar Nilai Mutu", iconText: "NM", path: "/nilai-mutu", },
+      { name: "Daftar Standar Mutu", iconText: "SM", path: "/standar-mutu", }],
+  },
+  {
+    name: "Evaluasi Diri",
+    icon: "edit_note",
+    children: [
+      { name: "Pengaturan Periode", iconText: "PP", path: "/periode" },
+      { name: "Target Nilai Mutu", iconText: "TN", path: "/target-nilai" },
+      { name: "Evaluasi Diri", iconText: "ED", path: "/evaluasi-diri" }],
   },
   { label: "PAGES", type: "label" },
   {
