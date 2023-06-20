@@ -4,6 +4,7 @@ import React from "react";
 
 interface RootPageProps {
   children: React.ReactNode;
+  form?: React.ReactNode;
   routeSegments: RouteSegment[];
 }
 
@@ -30,10 +31,11 @@ const RootPage: React.FC<RootPageProps> = (props) => {
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={props.routeSegments} />
         </Box>
+        {props.form}
       </HeaderContainer>
       {props.children}
     </Container>
   );
 };
 
-export default RootPage;
+export default React.memo(RootPage);

@@ -24,7 +24,6 @@ import SimpleCard from "../../../components/SimpleCard";
 
 import { useEffect, useState } from "react";
 import ItLoading from "../../../components/ItLoading";
-import { Alert } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { SpmiTahunPeriode } from "../../../types/spmi.tahun-periode";
 import SearchIcon from "@mui/icons-material/Search";
@@ -32,9 +31,6 @@ import { spmiLembagaAkreditasiStore } from "../../../stores/store.spmi.lembaga-a
 import { SpmiLembagaAkreditasi } from "../../../types/spmi.lembaga-akreditasi";
 import FormNilaiMutu from "./FormNilaiMutu";
 import { SpmiServiceProps } from "../../../services/service.spmi.nilai-mutu";
-//   import FormDialog from "./FormDialog";
-//   import { ToastContainer } from "react-toastify";
-//   import "react-toastify/dist/ReactToastify.css";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -56,27 +52,27 @@ const HeaderContainer = styled(Box)(() => ({
 const NilaiMutuPage = () => {
   const {
     loading: loading_nilai_mutu,
-    error: error_nilai_mutu,
     listSpmiNilaiMutu,
     spmiNilaiMutuDataTable,
     getListNilaiMutu,
   } = spmiNilaiMutuStore();
+
   const {
     loading: loading_tahun,
-    error: error_tahun,
     listTahunPeriode,
     getListTahunPeriode,
   } = spmiTahunPeriodeStore();
 
   const {
     loading: loading_lembaga,
-    error: error_lembaga,
     listLembagaAkreditasi,
     getLembagaAkreditasi,
   } = spmiLembagaAkreditasiStore();
+
   const [selectedTahun, setSelectedTahun] = useState<SpmiTahunPeriode | null>(
     null
   );
+
   const { initialValue, setActivity } = spmiNilaiMutuActivity();
   const [selectedLembaga, setSelectedLembaga] =
     useState<SpmiLembagaAkreditasi | null>(null);
@@ -107,7 +103,6 @@ const NilaiMutuPage = () => {
       updatedParam.tahun = undefined;
     }
     setParam(updatedParam);
-    // getListNilaiMutu(param);
   }
 
   function handleFilterLembaga(value: SpmiLembagaAkreditasi | null) {
@@ -119,10 +114,7 @@ const NilaiMutuPage = () => {
       updatedParam.lembaga = undefined;
     }
     setParam(updatedParam);
-    // getListNilaiMutu(param);
   }
-
-  //   const dispatch = useDispatch();
 
   function handleClickOpen() {
     setOpen(true);
@@ -270,7 +262,7 @@ const NilaiMutuPage = () => {
                           handleFilterTahun(newValue);
                         }}
                         id="filter-tahun-periode"
-                        options={listTahunPeriode!}
+                        options={listTahunPeriode}
                         getOptionLabel={(option: SpmiTahunPeriode) =>
                           option.tahun.toString()
                         }
@@ -288,7 +280,7 @@ const NilaiMutuPage = () => {
                           handleFilterLembaga(newValue);
                         }}
                         id="filter-lembaga-akreditasi"
-                        options={listLembagaAkreditasi!}
+                        options={listLembagaAkreditasi}
                         getOptionLabel={(option: SpmiLembagaAkreditasi) =>
                           option.name
                         }
@@ -361,11 +353,7 @@ const NilaiMutuPage = () => {
         </Box>
         {loading_nilai_mutu || loading_tahun || loading_lembaga ? (
           <ItLoading />
-        ) : error_nilai_mutu || error_tahun || error_lembaga ? (
-          <Alert sx={{ m: 1 }} severity="error" variant="filled">
-            {error_nilai_mutu || error_tahun || error_lembaga}
-          </Alert>
-        ) : listSpmiNilaiMutu !== null ? (
+        ) : (
           <SimpleCard title="Daftar Penilaian Mutu">
             <div style={{ height: "100%", width: "100%" }}>
               <DataGrid
@@ -381,13 +369,9 @@ const NilaiMutuPage = () => {
                 onRowClick={handleRowClick}
                 isRowSelectable={isCellEditable}
                 rowSelectionModel={selectedRowIds}
-
-                // rowch
               />
             </div>
           </SimpleCard>
-        ) : (
-          <ItLoading />
         )}
       </Container>
 
