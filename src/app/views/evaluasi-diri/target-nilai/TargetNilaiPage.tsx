@@ -184,14 +184,14 @@ const TargetNilaiPage = () => {
   ];
 
   useEffect(() => {
-    getListTargetNilai();
+    getListTargetNilai(param);
     if (listLembagaAkreditasi.length === 0 || listTahunPeriode.length === 0) {
       getListTahunPeriode();
       getLembagaAkreditasi();
       getListProgramStudi();
     }
   }, [param]);
-  console.log(listTargetNilai);
+  console.log(param);
   return (
     <Container>
       <HeaderContainer>

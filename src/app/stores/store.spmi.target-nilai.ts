@@ -6,6 +6,7 @@ import {
 } from "../types/spmi.target-nilai";
 import { devtools } from "zustand/middleware";
 import { SpmiTargetNilaiService } from "../services/service.spmi.target-nilai";
+import { SpmiServiceProps } from "../services/service.spmi.nilai-mutu";
 
 type SpmiTargetNilaiStoreProps = {
   loading: boolean;
@@ -13,7 +14,7 @@ type SpmiTargetNilaiStoreProps = {
   targetNilai?: SpmiTargetNilai;
   spmiTargetNilaiDataTable: SpmiTargetNilaiDataTable[];
   listTargetNilai: SpmiTargetNilai[];
-  getListTargetNilai: () => Promise<void>;
+  getListTargetNilai: (props?: SpmiServiceProps) => Promise<void>;
 };
 
 export const SpmiTargetNilaiStore = create<SpmiTargetNilaiStoreProps>()(
@@ -22,7 +23,7 @@ export const SpmiTargetNilaiStore = create<SpmiTargetNilaiStoreProps>()(
     error: false,
     listTargetNilai: [],
     spmiTargetNilaiDataTable: [],
-    getListTargetNilai: async (): Promise<void> => {
+    getListTargetNilai: async (props?: SpmiServiceProps): Promise<void> => {
       const returnData: SpmiTargetNilaiDataTable[] = [];
       try {
         set(
@@ -33,7 +34,7 @@ export const SpmiTargetNilaiStore = create<SpmiTargetNilaiStoreProps>()(
           false,
           "get list target nilai"
         );
-        const response = await SpmiTargetNilaiService.getListTargetNilai();
+        const response = await SpmiTargetNilaiService.getListTargetNilai(props);
         set(
           (prevState) => ({
             ...prevState,

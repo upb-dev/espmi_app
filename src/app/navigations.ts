@@ -27,8 +27,9 @@ export const navigations: Navigation[] = [
     name: "Standar Mutu",
     icon: "list",
     children: [
-      { name: "Daftar Nilai Mutu", iconText: "NM", path: "/nilai-mutu", },
-      { name: "Daftar Standar Mutu", iconText: "SM", path: "/standar-mutu", }],
+      { name: "Daftar Nilai Mutu", iconText: "NM", path: "/nilai-mutu" },
+      { name: "Daftar Standar Mutu", iconText: "SM", path: "/standar-mutu" },
+    ],
   },
   {
     name: "Evaluasi Diri",
@@ -36,8 +37,11 @@ export const navigations: Navigation[] = [
     children: [
       { name: "Pengaturan Periode", iconText: "PP", path: "/periode" },
       { name: "Target Nilai Mutu", iconText: "TN", path: "/target-nilai" },
-      { name: "Evaluasi Diri", iconText: "ED", path: "/evaluasi-diri" }],
+      { name: "Evaluasi Diri", iconText: "ED", path: "/evaluasi-diri" },
+    ],
   },
+  { name: "Auditor", path: "/auditor", icon: "groups" },
+
   { label: "PAGES", type: "label" },
   {
     name: "Session/Auth",

@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 import NotFound from "./views/sessions/NotFound";
 import standarMutu from "./views/standar-mutu/StandarMutuRoutes";
 import evaluasiDiri from "./views/evaluasi-diri/EvaluasiDiriRoutes";
+import auditor from "./views/auditor/AuditorRoutes";
 
 const routes = [
   {
@@ -19,6 +20,7 @@ const routes = [
       ...sessionRoutes,
       ...standarMutu,
       ...evaluasiDiri,
+      ...auditor,
     ],
   },
   { path: "/", element: <Navigate to="dashboard" /> },

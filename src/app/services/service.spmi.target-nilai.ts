@@ -5,13 +5,28 @@ import {
   SpmiTargetNilai,
   SpmiTargetNilaiPayload,
 } from "../types/spmi.target-nilai";
+import { SpmiServiceProps } from "./service.spmi.nilai-mutu";
 
 export const SpmiTargetNilaiService = {
-  async getListTargetNilai(): Promise<ResponseApi<SpmiTargetNilai[]>> {
+  async getListTargetNilai(
+    params?: SpmiServiceProps
+  ): Promise<ResponseApi<SpmiTargetNilai[]>> {
+    let url = `/api/target-nilai-mutu/?back_office&no_page`;
+    if (params?.tahun !== undefined) {
+      url += `&tahun=${params?.tahun}`;
+    }
+
+    if (params?.lembaga !== undefined) {
+      url += `&lembaga=${params?.lembaga}`;
+    }
+    if (params?.search !== undefined) {
+      url += `&search=${params?.search}`;
+    }
+
     const response: AxiosResponse<ResponseApi<SpmiTargetNilai[]>> = await Axios(
       {
         method: "GET",
-        url: "/api/target-nilai-mutu/?back_office&no_page",
+        url: url,
       }
     );
     return response.data;
