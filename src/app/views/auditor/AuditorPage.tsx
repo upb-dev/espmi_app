@@ -1,10 +1,16 @@
 import { styled, Box, Button } from "@mui/material";
 import Breadcrumb, { RouteSegment } from "../../components/Breadcrumb";
-import { SpmiAuditorStore } from "../../stores/store.spmi.auditor";
+import {
+  SpmiAuditorStore,
+  spmiAuditorActivity,
+} from "../../stores/store.spmi.auditor";
 import ItLoading from "../../components/ItLoading";
 import SimpleCard from "../../components/SimpleCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import FormAuditor from "./FormAuditor";
+import { spmiLembagaAkreditasiStore } from "../../stores/store.spmi.lembaga-akrediatasi";
+import { SpmiUnitStore } from "../../stores/store.spmi.unit";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -24,17 +30,6 @@ const HeaderContainer = styled(Box)(() => ({
 }));
 
 const AuditorPage = () => {
-  const routeSegments: RouteSegment[] = [
-    { name: "Auditor", path: "/auditor" },
-    { name: "List Auditor" },
-  ];
-  const {
-    loading: loading_audior,
-    listAuditor,
-    spmiAuditorDataTable,
-    getListAuditor,
-  } = SpmiAuditorStore();
-
   const columns: GridColDef[] = [
     { field: "id", headerName: "No", width: 70 },
     { field: "nik", headerName: "NIK", type: "string", width: 200 },
@@ -44,12 +39,12 @@ const AuditorPage = () => {
       type: "string",
       width: 400,
     },
-    // {
-    //   field: "lembaga_akreditasi",
-    //   headerName: "Lembaga Akreditasi",
-    //   type: "string",
-    //   width: 300,
-    // },
+    {
+      field: "instansi",
+      headerName: "Instansi",
+      type: "string",
+      width: 300,
+    },
     {
       field: "actions",
       headerName: "Actions",
@@ -82,20 +77,69 @@ const AuditorPage = () => {
       },
     },
   ];
+  const routeSegments: RouteSegment[] = [
+    { name: "Auditor", path: "/auditor" },
+    { name: "List Auditor" },
+  ];
+  const {
+    loading: loading_audior,
+    listAuditor,
+    spmiAuditorDataTable,
+    getListAuditor,
+  } = SpmiAuditorStore();
+
+  const { loading: loading_unit, listUnit, getListUnit } = SpmiUnitStore();
+
+  const {
+    loading: loading_lembaga,
+    listLembagaAkreditasi,
+    getLembagaAkreditasi,
+  } = spmiLembagaAkreditasiStore();
+
+  const { setActivity, initialValue } = spmiAuditorActivity();
+
+  const [edit, setEdit] = useState<string | null>(null);
+  const [loadingForm, setLoadingForm] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  // const [search, setSearch] = useState<string>("");
+  // const [param, setParam] = useState<SpmiServiceProps>({});
+
+  function handleClose() {
+    setActivity("reset");
+    setOpen(false);
+    getListAuditor();
+  }
+  function handleClickOpen() {
+    setOpen(true);
+    setEdit(null);
+  }
 
   useEffect(() => {
     getListAuditor();
+    getLembagaAkreditasi();
+    getListUnit();
   }, []);
-
-  console.log(listAuditor);
   return (
     <Container>
       <HeaderContainer>
         <Box className="breadcrumb">
           <Breadcrumb routeSegments={routeSegments} />
         </Box>
+        <Box display="flex">
+          <FormAuditor
+            id={edit}
+            loading={loadingForm}
+            setLoadingForm={setLoadingForm}
+            initialValues={initialValue}
+            handleClose={handleClose}
+            handleClickOpen={handleClickOpen}
+            listLembagaAkreditasi={listLembagaAkreditasi}
+            listUnit={listUnit}
+            open={open}
+          />
+        </Box>
       </HeaderContainer>
-      {loading_audior ? (
+      {loading_audior || loading_unit || loading_lembaga ? (
         <ItLoading />
       ) : (
         <SimpleCard title="Daftar Auditor">

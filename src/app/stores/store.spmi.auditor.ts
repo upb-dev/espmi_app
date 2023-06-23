@@ -51,7 +51,7 @@ export const SpmiAuditorStore = create<SpmiAuditorStoreProps>()(
               id: i + 1,
               nik: item.nik,
               nama_lengkap: `${item.gelar_depan} ${item.nama_lengkap} ${item.gelar_belakang}`,
-              // lembaga_akreditasi: "item.lembaga_akreditasi_data.name",
+              instansi: item.instansi,
             });
           });
           set(
@@ -84,6 +84,71 @@ export const SpmiAuditorStore = create<SpmiAuditorStoreProps>()(
           false,
           "success get auditor"
         );
+      }
+    },
+  }))
+);
+
+type spmiAuditorActivityState = {
+  activity: "edit" | "reset" | "add";
+  initialValue: SpmiAuditorPayload;
+  setActivity: (activity: string, data?: SpmiAuditor) => void;
+};
+
+export const spmiAuditorActivity = create<spmiAuditorActivityState>()(
+  devtools((set) => ({
+    activity: "add",
+    initialValue: {
+      nik: "",
+      gelar_belakang: "",
+      gelar_depan: "",
+      lembaga_akreditasi_id: [],
+      gender: null,
+      instansi: "",
+      jabatan: "",
+      units_id: [],
+      nama_lengkap: "",
+    },
+    setActivity(activity, data) {
+      switch (activity) {
+        case "edit":
+          set(() => ({
+            activity: activity,
+            initialValue: {
+              nik: data!.nik,
+              gelar_belakang: data!.gelar_belakang,
+              gelar_depan: data!.gelar_belakang,
+              lembaga_akreditasi_id: data!.lembaga_akreditasi_data.map(
+                (data) => data.id!
+              ),
+              gender: data!.gender,
+              instansi: data!.instansi,
+              jabatan: data!.jabatan,
+              units_id: data!.units_data.map((data) => data.id!),
+              nama_lengkap: data!.nama_lengkap,
+            },
+          }));
+          break;
+        case "reset":
+          set(() => ({
+            activity: activity,
+            initialValue: {
+              nik: "",
+              gelar_belakang: "",
+              gelar_depan: "",
+              lembaga_akreditasi_id: [],
+              gender: null,
+              instansi: "",
+              jabatan: "",
+              units_id: [],
+              nama_lengkap: "",
+            },
+          }));
+          break;
+        default:
+          set((state) => ({
+            ...state,
+          }));
       }
     },
   }))

@@ -118,7 +118,6 @@ const NilaiMutuPage = () => {
 
   function handleClickOpen() {
     setOpen(true);
-    setActivity("add");
     setEdit(null);
   }
 
@@ -237,7 +236,6 @@ const NilaiMutuPage = () => {
               listLembagaAkreditasi={listLembagaAkreditasi}
               listTahunPeriode={listTahunPeriode}
               open={open}
-              // edit={edit}
             />
           </Box>
         </HeaderContainer>
@@ -341,9 +339,6 @@ const NilaiMutuPage = () => {
                       >
                         Delete
                       </Button>
-                      {/* <Button variant="contained" onClick={handleClickOpen}>
-                        <Icon>add</Icon> Tambah Nilai Mutu
-                      </Button> */}
                     </Stack>
                   </Stack>
                 </Grid>
@@ -374,19 +369,6 @@ const NilaiMutuPage = () => {
           </SimpleCard>
         )}
       </Container>
-
-      {/* <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      /> */}
     </div>
   );
 };
