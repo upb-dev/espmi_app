@@ -156,8 +156,8 @@ const FormTargetNilai: React.FC<FormTargetNilaiProps> = (props) => {
 
   useEffect(() => {
     if (initialValues.lembaga_akreditasi !== null) {
-      const lembaga = listLembagaAkreditasi!.find(
-        (result) => result!.id! === initialValues!.lembaga_akreditasi!
+      const lembaga = listLembagaAkreditasi.find(
+        (result) => result.id === initialValues.lembaga_akreditasi
       );
       setSelectedLembaga(lembaga as SpmiLembagaAkreditasi);
     }

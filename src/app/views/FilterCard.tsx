@@ -18,17 +18,18 @@ import { SpmiTahunPeriode } from "../types/spmi.tahun-periode";
 import { SpmiLembagaAkreditasi } from "../types/spmi.lembaga-akreditasi";
 
 interface FilterCardProps {
-  selectedTahun: SpmiTahunPeriode | null;
+  selectedTahun?: SpmiTahunPeriode | null;
   handleFilterTahun: (value: SpmiTahunPeriode | null) => void;
-  listTahunPeriode: SpmiTahunPeriode[];
-  selectedLembaga: SpmiLembagaAkreditasi | null;
+  listTahunPeriode?: SpmiTahunPeriode[];
+  selectedLembaga?: SpmiLembagaAkreditasi | null;
   handleFilterLembaga: (value: SpmiLembagaAkreditasi | null) => void;
   listLembagaAkreditasi: SpmiLembagaAkreditasi[];
-  search: string;
+  search?: string;
   setSearch: (value: string) => void;
   handleSearch: () => void;
   handleDelete: () => void;
-  deleteButtonDisabled: boolean;
+  deleteButtonDisabled?: boolean;
+  searchOnly: boolean;
 }
 
 const FilterCard: React.FC<FilterCardProps> = ({
@@ -43,6 +44,7 @@ const FilterCard: React.FC<FilterCardProps> = ({
   handleSearch,
   handleDelete,
   deleteButtonDisabled,
+  searchOnly,
 }) => {
   const handleTahunChange = (
     _: ChangeEvent<{}>,
@@ -63,40 +65,42 @@ const FilterCard: React.FC<FilterCardProps> = ({
       <CardContent>
         <Grid container spacing={2}>
           <Grid item sm={6}>
-            <Stack columnGap={2} spacing={2}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Icon>filter_list</Icon>
-                <Typography>Filter Data Target Nilai</Typography>
+            {searchOnly !== true && (
+              <Stack columnGap={2} spacing={2}>
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <Icon>filter_list</Icon>
+                  <Typography>Filter Data Target Nilai</Typography>
+                </Stack>
+                <Stack direction="row" spacing={2}>
+                  <Autocomplete
+                    value={selectedTahun}
+                    onChange={handleTahunChange}
+                    id="filter-tahun-periode"
+                    options={listTahunPeriode!}
+                    getOptionLabel={(option: SpmiTahunPeriode) =>
+                      option.tahun.toString()
+                    }
+                    sx={{ width: 300 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Tahun Periode" />
+                    )}
+                  />
+                  <Autocomplete
+                    value={selectedLembaga}
+                    onChange={handleLembagaChange}
+                    id="filter-lembaga-akreditasi"
+                    options={listLembagaAkreditasi}
+                    getOptionLabel={(option: SpmiLembagaAkreditasi) =>
+                      option.name
+                    }
+                    sx={{ width: 300 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Lembaga Akreditasi" />
+                    )}
+                  />
+                </Stack>
               </Stack>
-              <Stack direction="row" spacing={2}>
-                <Autocomplete
-                  value={selectedTahun}
-                  onChange={handleTahunChange}
-                  id="filter-tahun-periode"
-                  options={listTahunPeriode}
-                  getOptionLabel={(option: SpmiTahunPeriode) =>
-                    option.tahun.toString()
-                  }
-                  sx={{ width: 300 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Tahun Periode" />
-                  )}
-                />
-                <Autocomplete
-                  value={selectedLembaga}
-                  onChange={handleLembagaChange}
-                  id="filter-lembaga-akreditasi"
-                  options={listLembagaAkreditasi}
-                  getOptionLabel={(option: SpmiLembagaAkreditasi) =>
-                    option.name
-                  }
-                  sx={{ width: 300 }}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Lembaga Akreditasi" />
-                  )}
-                />
-              </Stack>
-            </Stack>
+            )}
           </Grid>
           <Grid item sm={6}>
             <Stack columnGap={2} spacing={2} justifyContent="space-between">

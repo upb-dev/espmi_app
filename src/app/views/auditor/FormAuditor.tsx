@@ -9,6 +9,7 @@ import {
   Autocomplete,
   Typography,
   useTheme,
+  IconButton,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -24,6 +25,7 @@ import { SpmiLembagaAkreditasi } from "../../types/spmi.lembaga-akreditasi";
 import Swal from "sweetalert2";
 import { SpmiUnit } from "../../types/spmi.unit";
 import { SpmiAuditorPayload } from "../../types/spmi.auditor";
+import { SpmiAuditorService } from "../../services/service.spmi.auditor";
 
 interface FormAuditorProps {
   id: string | null;
@@ -35,6 +37,7 @@ interface FormAuditorProps {
   listLembagaAkreditasi: SpmiLembagaAkreditasi[];
   handleClickOpen: () => void;
   open: boolean;
+  isPreview: boolean;
 }
 
 const validationSchema = Yup.object().shape({
@@ -61,6 +64,7 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
     listLembagaAkreditasi,
     listUnit,
     open,
+    isPreview,
   } = props;
   const [selectedLembaga, setSelectedLembaga] = useState<
     SpmiLembagaAkreditasi[] | undefined
@@ -68,8 +72,57 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
   const [selectedUnit, setSelectedUnit] = useState<SpmiUnit[] | undefined>([]);
   const [selectedGender, setSelectedGender] = useState<string | null>(null);
 
-  const handleFormSubmit = () => {
-    console.log("submit");
+  const handleFormSubmit = (values: SpmiAuditorPayload) => {
+    setLoadingForm(true);
+    if (id !== null) {
+      SpmiAuditorService.updateAuditorById(id, values)
+        .then((result) => {
+          console.log(result);
+          setLoadingForm(false);
+          Swal.fire({
+            title: "Sukses",
+            text: "Data Auditor di Update",
+            icon: "success",
+          });
+          setSelectedLembaga([]);
+          setSelectedUnit([]);
+          setSelectedGender(null);
+          handleClose();
+        })
+        .catch((err) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+          setLoadingForm(false);
+          console.log(err);
+        });
+    } else {
+      SpmiAuditorService.createAuditor(values)
+        .then((result) => {
+          console.log(result);
+          Swal.fire({
+            title: "Sukses",
+            text: "Data Auditor Disimpan",
+            icon: "success",
+          });
+          setLoadingForm(false);
+          setSelectedLembaga([]);
+          setSelectedUnit([]);
+          setSelectedGender(null);
+          handleClose();
+        })
+        .catch((err) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong!",
+          });
+          setLoadingForm(false);
+          console.log(err);
+        });
+    }
   };
 
   const handleChangeGender = (
@@ -120,9 +173,38 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
       setSelectedUnit(undefined);
       values.units_id = [];
     }
-    console.log(values);
   }
-  console.log(listUnit);
+
+  useEffect(() => {
+    if (initialValues.lembaga_akreditasi_id.length !== 0) {
+      const listSelectedLembaga: SpmiLembagaAkreditasi[] = [];
+      initialValues.lembaga_akreditasi_id.forEach((element) => {
+        const lembaga = listLembagaAkreditasi.find((res) => res.id === element);
+        listSelectedLembaga.push(lembaga as SpmiLembagaAkreditasi);
+      });
+      setSelectedLembaga(listSelectedLembaga);
+    }
+    if (initialValues.units_id.length !== 0) {
+      const listSelectedUnit: SpmiUnit[] = [];
+      initialValues.units_id.forEach((element) => {
+        const unit = listUnit.find((res) => res.id === element);
+        listSelectedUnit.push(unit as SpmiUnit);
+      });
+      setSelectedUnit(listSelectedUnit);
+    }
+    if (initialValues.gender !== null) {
+      setSelectedGender(initialValues.gender.toString());
+    }
+  }, [initialValues]);
+
+  useEffect(() => {
+    if (open === false) {
+      setSelectedLembaga([]);
+      setSelectedUnit([]);
+      setSelectedGender(null);
+    }
+  }, [open]);
+
   return (
     <Box>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -149,7 +231,24 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
           }) => (
             <form onSubmit={handleSubmit}>
               <DialogTitle id="form-dialog-title">
-                Tambah Data Auditor
+                {id === null
+                  ? "Tambah "
+                  : id !== null && isPreview === false
+                  ? "Edit "
+                  : "Detail "}
+                Data Auditor
+                <IconButton
+                  aria-label="close"
+                  onClick={handleClose}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                    color: (theme) => theme.palette.grey[500],
+                  }}
+                >
+                  <Icon>close</Icon>
+                </IconButton>
               </DialogTitle>
               <DialogContent>
                 <TextField
@@ -167,6 +266,7 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
                   helperText={touched.nik! && errors.nik!}
                   error={Boolean(errors.nik! && touched.nik)}
                   sx={{ mt: 3, mb: 2 }}
+                  disabled={isPreview}
                 />
                 <Grid container direction="row" spacing={1} sx={{ mb: 2 }}>
                   <Grid item xs={3}>
@@ -182,6 +282,7 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
                       onChange={handleChange}
                       helperText={touched.gelar_depan && errors.gelar_depan}
                       error={Boolean(errors.gelar_depan && touched.gelar_depan)}
+                      disabled={isPreview}
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -201,6 +302,7 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
                       error={Boolean(
                         errors.nama_lengkap! && touched.nama_lengkap
                       )}
+                      disabled={isPreview}
                     />
                   </Grid>
                   <Grid item xs={3}>
@@ -220,6 +322,7 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
                       error={Boolean(
                         errors.gelar_belakang && touched.gelar_belakang
                       )}
+                      disabled={isPreview}
                     />
                   </Grid>
                 </Grid>
@@ -230,18 +333,20 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
                   row
                   aria-labelledby="demo-row-radio-buttons-group-label"
                   name="row-radio-buttons-group"
-                  value={values.gender}
+                  value={selectedGender}
                   onChange={(val) => handleChangeGender(val, values)}
                 >
                   <FormControlLabel
                     value={2}
                     control={<Radio />}
                     label="Perempuan"
+                    disabled={isPreview}
                   />
                   <FormControlLabel
                     value={1}
                     control={<Radio />}
                     label="Laki - laki"
+                    disabled={isPreview}
                   />
                 </RadioGroup>
                 <ErrorMessage
@@ -259,6 +364,7 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
                   )}
                 />
                 <Autocomplete
+                  disabled={isPreview}
                   id="lembaga_akreditasi_id"
                   options={listLembagaAkreditasi}
                   multiple
@@ -293,11 +399,13 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
                         mb: 2,
                         mt: 2,
                       }}
+                      disabled={isPreview}
                     />
                   )}
                 />
                 <Autocomplete
                   id="units_id"
+                  disabled={isPreview}
                   options={listUnit}
                   multiple
                   value={selectedUnit}
@@ -323,6 +431,7 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
                         mb: 2,
                         mt: 2,
                       }}
+                      disabled={isPreview}
                     />
                   )}
                 />
@@ -341,6 +450,7 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
                   helperText={touched.instansi! && errors.instansi!}
                   error={Boolean(errors.instansi! && touched.instansi)}
                   sx={{ mt: 2, mb: 2 }}
+                  disabled={isPreview}
                 />
                 <TextField
                   focused
@@ -357,25 +467,28 @@ const FormAuditor: React.FC<FormAuditorProps> = (props) => {
                   helperText={touched.jabatan! && errors.jabatan!}
                   error={Boolean(errors.jabatan! && touched.jabatan)}
                   sx={{ mt: 2, mb: 2 }}
+                  disabled={isPreview}
                 />
               </DialogContent>
-              <DialogActions>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={handleClose}
-                >
-                  Cancel
-                </Button>
-                <LoadingButton
-                  type="submit"
-                  color="primary"
-                  loading={loading!}
-                  variant="contained"
-                >
-                  Simpan
-                </LoadingButton>
-              </DialogActions>
+              {isPreview !== true && (
+                <DialogActions>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={handleClose}
+                  >
+                    Cancel
+                  </Button>
+                  <LoadingButton
+                    type="submit"
+                    color="primary"
+                    loading={loading!}
+                    variant="contained"
+                  >
+                    Simpan
+                  </LoadingButton>
+                </DialogActions>
+              )}
             </form>
           )}
         </Formik>

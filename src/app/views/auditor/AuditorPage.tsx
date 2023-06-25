@@ -1,4 +1,4 @@
-import { styled, Box, Button } from "@mui/material";
+import { styled, Box, Button, Stack } from "@mui/material";
 import Breadcrumb, { RouteSegment } from "../../components/Breadcrumb";
 import {
   SpmiAuditorStore,
@@ -11,6 +11,8 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import FormAuditor from "./FormAuditor";
 import { spmiLembagaAkreditasiStore } from "../../stores/store.spmi.lembaga-akrediatasi";
 import { SpmiUnitStore } from "../../stores/store.spmi.unit";
+import FilterCard from "../FilterCard";
+import { SpmiServiceProps } from "../../services/service.spmi.nilai-mutu";
 
 const Container = styled("div")(({ theme }) => ({
   margin: "30px",
@@ -53,26 +55,43 @@ const AuditorPage = () => {
       width: 150,
       align: "right",
       renderCell: (params) => {
-        const handleUpdate = () => {
-          const id = parseInt(params.id.toString());
+        const id = parseInt(params.id.toString());
 
-          const data = listAuditor[id - 1];
-          // Lakukan aksi penghapusan dengan menggunakan ID
-          //   setActivity("edit", data);
-          //   setOpen(true);
-          //   setEdit(data.id!);
-          console.log(`Delete row with ID ${JSON.stringify(data)}`);
+        const data = listAuditor[id - 1];
+        const handleUpdate = () => {
+          setActivity("edit", data);
+          if (isPreview === true) {
+            setIsPreview(false);
+          }
+          setOpen(true);
+          setEdit(data.id!);
+        };
+        const handleDetail = () => {
+          setActivity("edit", data);
+          setIsPreview(true);
+          setOpen(true);
+          setEdit(data.id!);
         };
 
         return (
-          <Button
-            size="small"
-            variant="outlined"
-            color="secondary"
-            onClick={handleUpdate}
-          >
-            Update
-          </Button>
+          <Stack direction="row" spacing={1}>
+            <Button
+              size="small"
+              variant="outlined"
+              color="info"
+              onClick={handleDetail}
+            >
+              Detail
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              color="secondary"
+              onClick={handleUpdate}
+            >
+              Update
+            </Button>
+          </Stack>
         );
       },
     },
@@ -101,8 +120,9 @@ const AuditorPage = () => {
   const [edit, setEdit] = useState<string | null>(null);
   const [loadingForm, setLoadingForm] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
-  // const [search, setSearch] = useState<string>("");
-  // const [param, setParam] = useState<SpmiServiceProps>({});
+  const [search, setSearch] = useState<string>("");
+  const [param, setParam] = useState<SpmiServiceProps>({});
+  const [isPreview, setIsPreview] = useState<boolean>(false);
 
   function handleClose() {
     setActivity("reset");
@@ -111,14 +131,56 @@ const AuditorPage = () => {
   }
   function handleClickOpen() {
     setOpen(true);
+    if (isPreview === true) {
+      setIsPreview(false);
+    }
     setEdit(null);
   }
 
+  const handleRowClick = (params: any) => {
+    const { id } = params;
+    let newSelectedRowIds: number[];
+
+    if (selectedRowIds.includes(id)) {
+      // Deselect row if it's already selected
+      newSelectedRowIds = selectedRowIds.filter((rowId) => rowId !== id);
+    } else {
+      // Select row if it's not already selected
+      newSelectedRowIds = [...selectedRowIds, id];
+    }
+
+    setSelectedRowIds(newSelectedRowIds);
+  };
+  const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
+  const deleteButtonDisabled = selectedRowIds.length === 0;
+  const isCellEditable = (params: any) => {
+    return !selectedRowIds.includes(params.row.id);
+  };
+  const handleDelete = () => {
+    // Handle delete action for selectedRow
+    // Perform the desired delete action
+    console.log("Delete selected row:", selectedRowIds);
+  };
+
+  function handleSearch() {
+    const updatedParam: SpmiServiceProps = { ...param }; // Membuat salinan objek param
+
+    if (search !== "") {
+      updatedParam.search = search;
+    } else {
+      updatedParam.search = undefined;
+    }
+
+    setParam(updatedParam);
+  }
+
   useEffect(() => {
-    getListAuditor();
-    getLembagaAkreditasi();
-    getListUnit();
-  }, []);
+    getListAuditor(param);
+    if (listUnit.length === 0 || listLembagaAkreditasi.length === 0) {
+      getLembagaAkreditasi();
+      getListUnit();
+    }
+  }, [param]);
   return (
     <Container>
       <HeaderContainer>
@@ -136,9 +198,27 @@ const AuditorPage = () => {
             listLembagaAkreditasi={listLembagaAkreditasi}
             listUnit={listUnit}
             open={open}
+            isPreview={isPreview}
           />
         </Box>
       </HeaderContainer>
+      <div style={{ paddingBottom: "10px" }}>
+        <FilterCard
+          handleDelete={handleDelete}
+          handleFilterLembaga={() => {}}
+          handleFilterTahun={() => {}}
+          handleSearch={handleSearch}
+          listLembagaAkreditasi={listLembagaAkreditasi}
+          searchOnly={true}
+          setSearch={setSearch}
+          deleteButtonDisabled={deleteButtonDisabled}
+          key={1}
+          listTahunPeriode={[]}
+          search={search}
+          selectedLembaga={undefined}
+          selectedTahun={undefined}
+        />
+      </div>
       {loading_audior || loading_unit || loading_lembaga ? (
         <ItLoading />
       ) : (
@@ -154,9 +234,9 @@ const AuditorPage = () => {
               }}
               pageSizeOptions={[5, 10, 15, 20]}
               checkboxSelection={true}
-              //   onRowClick={handleRowClick}
-              //   isRowSelectable={isCellEditable}
-              //   rowSelectionModel={selectedRowIds}
+              onRowClick={handleRowClick}
+              isRowSelectable={isCellEditable}
+              rowSelectionModel={selectedRowIds}
             />
           </div>
         </SimpleCard>

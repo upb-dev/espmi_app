@@ -166,7 +166,7 @@ const TargetNilaiPage = () => {
           setActivity("edit", data);
           setOpen(true);
           setEdit(data.id!);
-          console.log(`Delete row with ID ${JSON.stringify(data)}`);
+          // console.log(`Delete row with ID ${JSON.stringify(data)}`);
         };
 
         return (
@@ -191,7 +191,7 @@ const TargetNilaiPage = () => {
       getListProgramStudi();
     }
   }, [param]);
-  console.log(param);
+
   return (
     <Container>
       <HeaderContainer>
@@ -227,6 +227,7 @@ const TargetNilaiPage = () => {
           selectedTahun={selectedTahun}
           setSearch={setSearch}
           key={1}
+          searchOnly={false}
         />
       </Box>
       {loading || loading_lembaga || loading_tahun ? (
