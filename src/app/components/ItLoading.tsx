@@ -19,7 +19,7 @@ const StyledLoading = styled("div")(() => ({
   },
 }));
 
-const Loading = () => {
+const ItLoading = () => {
   return (
     <StyledLoading>
       <Box position="relative">
@@ -37,4 +37,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default ItLoading;

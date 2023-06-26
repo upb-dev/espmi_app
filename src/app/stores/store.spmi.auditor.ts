@@ -48,7 +48,7 @@ export const SpmiAuditorStore = create<SpmiAuditorStoreProps>()(
         if (response.data.length !== 0) {
           response.data.map((item, i) => {
             returnData.push({
-              id: i + 1,
+              id: (i + 1) as number,
               nik: item.nik,
               nama_lengkap: `${item.gelar_depan} ${item.nama_lengkap} ${item.gelar_belakang}`,
               instansi: item.instansi,

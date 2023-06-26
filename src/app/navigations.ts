@@ -41,6 +41,22 @@ export const navigations: Navigation[] = [
     ],
   },
   { name: "Auditor", path: "/auditor", icon: "groups" },
+  {
+    name: "Manajemen Referensi",
+    icon: "widgets",
+    children: [
+      { name: "Fakultas", iconText: "F", path: "/fakultas" },
+      { name: "Unit Penunjang", iconText: "UN", path: "/unit-penunjang" },
+      { name: "Prodi", iconText: "P", path: "/prodi" },
+      {
+        name: "Lembaga Akreditasi",
+        iconText: "LA",
+        path: "/lembaga-akreditasi",
+      },
+      { name: "Standar Nasional", iconText: "SN", path: "/standar-nasional" },
+      { name: "Tahun Periode", iconText: "TP", path: "/tahun-periode" },
+    ],
+  },
 
   { label: "PAGES", type: "label" },
   {

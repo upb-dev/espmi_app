@@ -7,6 +7,7 @@ import NotFound from "./views/sessions/NotFound";
 import standarMutu from "./views/standar-mutu/StandarMutuRoutes";
 import evaluasiDiri from "./views/evaluasi-diri/EvaluasiDiriRoutes";
 import auditor from "./views/auditor/AuditorRoutes";
+import referensi from "./views/referensi/ReferensiRoutes";
 
 const routes = [
   {
@@ -21,6 +22,7 @@ const routes = [
       ...standarMutu,
       ...evaluasiDiri,
       ...auditor,
+      ...referensi,
     ],
   },
   { path: "/", element: <Navigate to="dashboard" /> },

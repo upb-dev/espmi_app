@@ -138,8 +138,8 @@ const FormNilaiMutu: React.FC<FormNilaiMutuProps> = (props) => {
 
   useEffect(() => {
     if (initialValues.lembaga_akreditasi !== null) {
-      const lembaga = listLembagaAkreditasi!.find(
-        (result) => result!.id! === initialValues!.lembaga_akreditasi!
+      const lembaga = listLembagaAkreditasi.find(
+        (result) => result.id === initialValues.lembaga_akreditasi
       );
       setSelectedLembaga(lembaga as SpmiLembagaAkreditasi);
     }
@@ -288,9 +288,6 @@ const FormNilaiMutu: React.FC<FormNilaiMutuProps> = (props) => {
                 <LoadingButton
                   type="submit"
                   color="primary"
-                  //   disabled={
-                  //     values.lembaga_id === null || values.tahun === null
-                  //   }
                   loading={loading!}
                   variant="contained"
                 >

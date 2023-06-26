@@ -30,6 +30,7 @@ interface FilterCardProps {
   handleDelete: () => void;
   deleteButtonDisabled?: boolean;
   searchOnly: boolean;
+  title?: string;
 }
 
 const FilterCard: React.FC<FilterCardProps> = ({
@@ -45,6 +46,7 @@ const FilterCard: React.FC<FilterCardProps> = ({
   handleDelete,
   deleteButtonDisabled,
   searchOnly,
+  title,
 }) => {
   const handleTahunChange = (
     _: ChangeEvent<{}>,
@@ -127,8 +129,8 @@ const FilterCard: React.FC<FilterCardProps> = ({
                     sx={{ ml: 1, flex: 1 }}
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
-                    placeholder="Cari Target Nilai"
-                    inputProps={{ "aria-label": "cari target nilai" }}
+                    placeholder={`Cari ${title !== undefined ? title : ""}`}
+                    inputProps={{ "aria-label": "cari" }}
                   />
                   <IconButton
                     type="button"
